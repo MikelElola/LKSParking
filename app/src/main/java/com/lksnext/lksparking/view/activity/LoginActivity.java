@@ -1,4 +1,4 @@
-package com.lksnext.parkingplantilla.view.activity;
+package com.lksnext.lksparking.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.lksnext.parkingplantilla.databinding.ActivityLoginBinding;
-import com.lksnext.parkingplantilla.viewmodel.LoginViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.lksnext.lksparking.databinding.ActivityLoginBinding;
+import com.lksnext.lksparking.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         //Acciones a realizar cuando el usuario clica el boton de crear cuenta (se cambia de pantalla)
         binding.createAccount.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            loginViewModel.registerUser(binding.emailText.getText().toString(),binding.passwordText.getText().toString());
             startActivity(intent);
         });
 
@@ -51,5 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }

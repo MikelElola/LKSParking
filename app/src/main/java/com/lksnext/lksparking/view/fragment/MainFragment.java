@@ -1,18 +1,13 @@
-package com.lksnext.parkingplantilla.view.fragment;
+package com.lksnext.lksparking.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import com.google.android.material.textview.MaterialTextView;
-import com.lksnext.parkingplantilla.R;
+import com.lksnext.lksparking.R;
 
 
 public class MainFragment extends Fragment {

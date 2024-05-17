@@ -1,4 +1,4 @@
-package com.lksnext.parkingplantilla.domain;
+package com.lksnext.lksparking.domain;
 
 public interface Callback {
     void onSuccess();

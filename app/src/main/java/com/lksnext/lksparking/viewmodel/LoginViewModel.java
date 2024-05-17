@@ -1,11 +1,12 @@
-package com.lksnext.parkingplantilla.viewmodel;
+package com.lksnext.lksparking.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.lksnext.parkingplantilla.data.DataRepository;
-import com.lksnext.parkingplantilla.domain.Callback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.lksnext.lksparking.data.DataRepository;
+import com.lksnext.lksparking.domain.Callback;
 
 public class LoginViewModel extends ViewModel {
 
@@ -23,6 +24,7 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onSuccess() {
                 //TODO
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password);
                 logged.setValue(Boolean.TRUE);
             }
 
@@ -33,6 +35,11 @@ public class LoginViewModel extends ViewModel {
                 logged.setValue(Boolean.FALSE);
             }
         });
+    }
+    public void registerUser(String email, String password){
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                email,password
+        );
     }
 }
 

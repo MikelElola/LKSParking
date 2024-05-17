@@ -1,6 +1,5 @@
-package com.lksnext.parkingplantilla.viewmodel;
+package com.lksnext.lksparking.viewmodel;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {

@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "315841506138",
-    "project_id": "parkingupinedo",
-    "storage_bucket": "parkingupinedo.appspot.com"
+    "project_number": "1057776493776",
+    "project_id": "lksparking",
+    "storage_bucket": "lksparking.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:315841506138:android:f0bf95521ba99696c5e163",
+        "mobilesdk_app_id": "1:1057776493776:android:fa77b5e939f3f04bbdaad5",
         "android_client_info": {
-          "package_name": "com.lksnext.parkingupinedo"
+          "package_name": "com.lksnext.lksparking"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "315841506138-k1um87oi2pieknfpdq46jl89pjj6phpf.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBctHfzFJSw3yZDDtRuzKVf9WthYkw74qM"
+          "current_key": "AIzaSyCrM6b2zvQP5sKcFUHyPbu73NZsMO0UHT4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "315841506138-k1um87oi2pieknfpdq46jl89pjj6phpf.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

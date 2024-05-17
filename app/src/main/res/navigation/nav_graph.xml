@@ -7,8 +7,20 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.lksnext.parkingplantilla.view.fragment.MainFragment"
+        android:name="com.lksnext.lksparking.view.fragment.MainFragment"
         android:label="@string/fragment_main"
         tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_reservationsFragment"
+            app:destination="@id/reservationsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservationsFragment"
+        android:name="com.lksnext.lksparking.view.fragment.ReservationsFragment"
+        android:label="fragment_reservations"
+        tools:layout="@layout/fragment_reservations" >
+        <action
+            android:id="@+id/action_reservationsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

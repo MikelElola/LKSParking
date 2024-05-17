@@ -1,12 +1,12 @@
-package com.lksnext.parkingplantilla.view.activity;
+package com.lksnext.lksparking.view.activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.lksnext.parkingplantilla.databinding.ActivityRegisterBinding;
-import com.lksnext.parkingplantilla.viewmodel.RegisterViewModel;
+import com.lksnext.lksparking.databinding.ActivityRegisterBinding;
+import com.lksnext.lksparking.viewmodel.RegisterViewModel;
 
 public class RegisterActivity extends AppCompatActivity {
 
