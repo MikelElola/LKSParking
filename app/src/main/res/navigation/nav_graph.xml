@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_mainFragment_to_reservationsFragment"
             app:destination="@id/reservationsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_vigentesFragment"
+            app:destination="@id/vigentesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_verReservasFragment"
+            app:destination="@id/verReservasFragment" />
     </fragment>
     <fragment
         android:id="@+id/reservationsFragment"
@@ -21,6 +27,24 @@
         tools:layout="@layout/fragment_reservations" >
         <action
             android:id="@+id/action_reservationsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vigentesFragment"
+        android:name="com.lksnext.lksparking.view.fragment.VigentesFragment"
+        android:label="fragment_vigentes"
+        tools:layout="@layout/fragment_vigentes" >
+        <action
+            android:id="@+id/action_vigentesFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verReservasFragment"
+        android:name="com.lksnext.lksparking.view.fragment.VerReservasFragment"
+        android:label="fragment_ver_reservas"
+        tools:layout="@layout/fragment_ver_reservas" >
+        <action
+            android:id="@+id/action_verReservasFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

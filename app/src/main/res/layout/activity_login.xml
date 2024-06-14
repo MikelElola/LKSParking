@@ -10,15 +10,18 @@
     <Button
         android:id="@+id/loginButton"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="154dp"
+        android:layout_height="81dp"
         android:layout_marginTop="100dp"
         android:text="Login"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:strokeColor="@color/orange" />
+        app:strokeColor="@color/primary" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,12 +34,20 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="¿No tienes una cuenta? "
+            android:textSize="16sp"
+            />
+        <TextView
             android:id="@+id/createAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Register"
-            android:textColor="@color/orange"
+            android:text="Regístrate"
+            android:textSize="16sp"
+            android:textColor="@color/primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.467"
@@ -50,8 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
-        android:text="BIENVENIDO"
-        android:textColor="@color/orange"
+        android:text="¡Bienvenido/a!"
+        android:textColor="@color/primary"
         android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

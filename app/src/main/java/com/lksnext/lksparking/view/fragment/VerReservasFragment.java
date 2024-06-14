@@ -8,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.datepicker.MaterialDatePicker;
-
 import com.lksnext.lksparking.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ReservationsFragment#newInstance} factory method to
+ * Use the {@link VerReservasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReservationsFragment extends Fragment {
+public class VerReservasFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +26,7 @@ public class ReservationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ReservationsFragment() {
+    public VerReservasFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +36,11 @@ public class ReservationsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ReservationsFragment.
+     * @return A new instance of fragment VerReservasFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReservationsFragment newInstance(String param1, String param2) {
-        ReservationsFragment fragment = new ReservationsFragment();
+    public static VerReservasFragment newInstance(String param1, String param2) {
+        VerReservasFragment fragment = new VerReservasFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,13 +61,6 @@ public class ReservationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_reservations, container, false);
-
-        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select date").setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .build();
-        datePicker.show(getChildFragmentManager(), "datePickerTag");
-
-        return view;
+        return inflater.inflate(R.layout.fragment_ver_reservas, container, false);
     }
 }

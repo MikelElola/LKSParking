@@ -44,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.reservations) {
                 navController.navigate(R.id.reservationsFragment);
-            } else if (itemId == R.id.person) {
+                return true;
+            } else if(itemId == R.id.viewres){
+                navController.navigate(R.id.verReservasFragment);
+                return true;
+            }
+            else if (itemId == R.id.person) {
                 //TODO
             }
             return false;

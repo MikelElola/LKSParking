@@ -6,7 +6,11 @@
         android:icon="@drawable/ic_newres_foreground"/>
     <item
         android:id="@+id/reservations"
-        android:title="Mis reservas"
+        android:title="Reservas vigentes"
+        android:icon="@drawable/ic_reservations_foreground"/>
+    <item
+        android:id="@+id/viewres"
+        android:title="Ver reservas"
         android:icon="@drawable/ic_reservations_foreground"/>
     <item
         android:id="@+id/person"
