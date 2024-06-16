@@ -1,8 +1,10 @@
 package com.lksnext.lksparking.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import com.lksnext.lksparking.R;
+import com.lksnext.lksparking.view.activity.LoginActivity;
+import com.lksnext.lksparking.view.activity.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,7 +70,7 @@ public class NewReservationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_reservation, container, false);
         Button calendarButton = view.findViewById(R.id.calendarButton);
-
+        Button reservarButton = view.findViewById(R.id.reservarButton);
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date").setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
@@ -74,6 +78,17 @@ public class NewReservationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 datePicker.show(getChildFragmentManager(), "datePickerTag");
+            }
+        });
+
+        reservarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment reservationTimeFragment = new ReservationTimeFragment();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.flFragment, reservationTimeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         return view;
