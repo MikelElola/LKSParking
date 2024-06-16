@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#243CC1</color>
-    <color name="secondary">#465D91</color>
+    <color name="secondary">#446DCA</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="error">#BA1A1A</color>
     <color name="md_theme_surfaceVariant">#E2E1EC</color>
     <color name="md_theme_onSurfaceVariant">#45464F</color>
-    <color name="md_theme_outline">#767680</color>
+    <color name="md_theme_outline">#9999A3</color>
 </resources>

@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.ReservationsFragment">
+    tools:context=".view.fragment.NewReservationFragment">
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/dateLinearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginTop="70dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,11 +26,12 @@
         <Button
             android:id="@+id/calendarButton"
             style="?attr/materialIconButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:text=""
+            android:contentDescription=""
             app:icon="@drawable/baseline_calendar_month_24"
-            app:iconSize="30dp" /> <!-- Remove text if not needed -->
+            app:iconSize="30dp" />
     </LinearLayout>
 
     <GridLayout

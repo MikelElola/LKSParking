@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.newres) {
-                navController.navigate(R.id.mainFragment);
+                navController.navigate(R.id.newReservationFragment);
                 return true;
             } else if (itemId == R.id.reservations) {
-                navController.navigate(R.id.reservationsFragment);
+                navController.navigate(R.id.vigentesFragment);
                 return true;
             } else if(itemId == R.id.viewres){
                 navController.navigate(R.id.verReservasFragment);

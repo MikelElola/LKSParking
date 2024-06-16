@@ -3,16 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/newReservationFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.lksnext.lksparking.view.fragment.MainFragment"
+        android:id="@+id/newReservationFragment"
+        android:name="com.lksnext.lksparking.view.fragment.NewReservationFragment"
         android:label="@string/fragment_main"
-        tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_mainFragment_to_reservationsFragment"
-            app:destination="@id/reservationsFragment" />
+        tools:layout="@layout/fragment_new_reservation">
         <action
             android:id="@+id/action_mainFragment_to_vigentesFragment"
             app:destination="@id/vigentesFragment" />
@@ -21,22 +18,13 @@
             app:destination="@id/verReservasFragment" />
     </fragment>
     <fragment
-        android:id="@+id/reservationsFragment"
-        android:name="com.lksnext.lksparking.view.fragment.ReservationsFragment"
-        android:label="fragment_reservations"
-        tools:layout="@layout/fragment_reservations" >
-        <action
-            android:id="@+id/action_reservationsFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/vigentesFragment"
         android:name="com.lksnext.lksparking.view.fragment.VigentesFragment"
         android:label="fragment_vigentes"
         tools:layout="@layout/fragment_vigentes" >
         <action
             android:id="@+id/action_vigentesFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/newReservationFragment" />
     </fragment>
     <fragment
         android:id="@+id/verReservasFragment"
@@ -45,6 +33,6 @@
         tools:layout="@layout/fragment_ver_reservas" >
         <action
             android:id="@+id/action_verReservasFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/newReservationFragment" />
     </fragment>
 </navigation>

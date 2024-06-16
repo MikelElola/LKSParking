@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -14,10 +15,10 @@ import com.lksnext.lksparking.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ReservationsFragment#newInstance} factory method to
+ * Use the {@link NewReservationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReservationsFragment extends Fragment {
+public class NewReservationFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +29,7 @@ public class ReservationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ReservationsFragment() {
+    public NewReservationFragment() {
         // Required empty public constructor
     }
 
@@ -41,8 +42,8 @@ public class ReservationsFragment extends Fragment {
      * @return A new instance of fragment ReservationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReservationsFragment newInstance(String param1, String param2) {
-        ReservationsFragment fragment = new ReservationsFragment();
+    public static NewReservationFragment newInstance(String param1, String param2) {
+        NewReservationFragment fragment = new NewReservationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,13 +64,18 @@ public class ReservationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_reservations, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_reservation, container, false);
+        Button calendarButton = view.findViewById(R.id.calendarButton);
 
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select date").setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .build();
-        datePicker.show(getChildFragmentManager(), "datePickerTag");
-
+                .setTitleText("Select date").setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker.show(getChildFragmentManager(), "datePickerTag");
+            }
+        });
         return view;
     }
 }
