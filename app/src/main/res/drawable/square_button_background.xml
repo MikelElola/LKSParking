@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="0dp" /> <!-- Bordes cuadrados -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/black" /> <!-- Borde de 2dp de ancho y color negro -->
+    <solid android:color="@color/free_parkingslot" /> <!-- Color de fondo -->
+</shape>

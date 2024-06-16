@@ -6,6 +6,8 @@
         <item name="colorSurface">@color/black</item>
         <item name="backgroundColor">@color/white</item>
         <item name="colorError">@color/error</item>
+        <item name="colorOnSurface">@color/free_parkingslot</item>
+        <item name="colorOnSurfaceVariant">@color/occupied_parkingslot</item>
     </style>
 
     <style name="Theme.ParkingLKS.TextInputLayout">

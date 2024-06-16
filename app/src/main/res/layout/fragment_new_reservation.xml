@@ -9,115 +9,44 @@
     <LinearLayout
         android:id="@+id/dateLinearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="70dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="  Date"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:textColor="@color/primary" />
 
         <Button
             android:id="@+id/calendarButton"
             style="?attr/materialIconButtonStyle"
-            android:layout_width="48dp"
+            android:layout_width="60dp"
             android:layout_height="48dp"
             android:text=""
             android:contentDescription=""
             app:icon="@drawable/baseline_calendar_month_24"
-            app:iconSize="30dp" />
+            app:iconSize="40dp" />
     </LinearLayout>
 
-    <GridLayout
+    <include layout="@layout/item_plano_parking"
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="500dp"
         android:layout_marginTop="30dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="7"
-        android:padding="16dp"
-        android:rowCount="6"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateLinearLayout">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="1" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="2" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="3" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="4" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="5" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="6" />
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="7" />
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="8" />
-    </GridLayout>
+        app:layout_constraintTop_toBottomOf="@+id/dateLinearLayout"
+        />
 
     <Button
         android:id="@+id/reservarButton"
@@ -126,6 +55,7 @@
         android:text="RESERVAR"
         android:textColor="@color/white"
         app:backgroundTint="@color/primary"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

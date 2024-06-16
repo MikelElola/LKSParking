@@ -5,6 +5,8 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="error">#BA1A1A</color>
+    <color name="free_parkingslot">#4EB148</color>
+    <color name="occupied_parkingslot">#F45D51</color>
     <color name="md_theme_surfaceVariant">#E2E1EC</color>
     <color name="md_theme_onSurfaceVariant">#45464F</color>
     <color name="md_theme_outline">#9999A3</color>
