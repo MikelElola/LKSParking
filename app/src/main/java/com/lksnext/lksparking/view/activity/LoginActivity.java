@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         //Acciones a realizar cuando el usuario clica el boton de crear cuenta (se cambia de pantalla)
         binding.createAccount.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            loginViewModel.registerUser(binding.emailText.getText().toString(),binding.passwordText.getText().toString());
             startActivity(intent);
         });
 

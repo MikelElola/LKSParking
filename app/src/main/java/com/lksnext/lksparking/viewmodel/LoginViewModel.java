@@ -36,10 +36,6 @@ public class LoginViewModel extends ViewModel {
             }
         });
     }
-    public void registerUser(String email, String password){
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                email,password
-        );
-    }
+
 }
 

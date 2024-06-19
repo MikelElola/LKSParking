@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lksnext.lksparking.R;
-import com.lksnext.lksparking.viewmodel.ReservationTimeViewModel;
+import com.lksnext.lksparking.viewmodel.ReservationViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +20,7 @@ import com.lksnext.lksparking.viewmodel.ReservationTimeViewModel;
  */
 public class ReservationTimeFragment extends Fragment {
 
-    private ReservationTimeViewModel reservationTimeViewModel;
+    private ReservationViewModel reservationViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,11 +68,11 @@ public class ReservationTimeFragment extends Fragment {
        View view= inflater.inflate(R.layout.fragment_reservation_time, container, false);
        TextInputEditText timeInputEditText = view.findViewById(R.id.start_time_input_edit_text);
 
-       reservationTimeViewModel = new ViewModelProvider(this).get(ReservationTimeViewModel.class);
+       reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
        timeInputEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reservationTimeViewModel.showTimePicker(getChildFragmentManager(),timeInputEditText);
+                reservationViewModel.showTimePicker(getChildFragmentManager(),timeInputEditText);
             }
        });
 

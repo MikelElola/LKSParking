@@ -5,17 +5,24 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import com.lksnext.lksparking.R;
+import com.lksnext.lksparking.databinding.FragmentNewReservationBinding;
 import com.lksnext.lksparking.view.activity.LoginActivity;
 import com.lksnext.lksparking.view.activity.MainActivity;
+import com.lksnext.lksparking.viewmodel.RegisterViewModel;
+import com.lksnext.lksparking.viewmodel.ReservationViewModel;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +39,9 @@ public class NewReservationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ReservationViewModel reservationViewModel;
+    private FragmentNewReservationBinding binding;
 
     public NewReservationFragment() {
         // Required empty public constructor
@@ -67,13 +77,23 @@ public class NewReservationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_reservation, container, false);
-        Button calendarButton = view.findViewById(R.id.calendarButton);
-        Button reservarButton = view.findViewById(R.id.reservarButton);
-        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Select date").setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+
+        // Usar Data Binding para inflar el layout
+        binding = FragmentNewReservationBinding.inflate(inflater, container, false);
+        reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
+        binding.setReservationViewModel(reservationViewModel);
+        binding.setLifecycleOwner(this);
+
+        MaterialDatePicker<Long> datePicker ;
+
+        // Configurar el DatePicker
+        datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
+
+        // Configurar el OnClickListener del botón
+        Button calendarButton = binding.calendarButton;
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,16 +101,11 @@ public class NewReservationFragment extends Fragment {
             }
         });
 
-        reservarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment reservationTimeFragment = new ReservationTimeFragment();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.flFragment, reservationTimeFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+        // Manejar la fecha seleccionada y actualizar el ViewModel
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            reservationViewModel.setSelectedDate((Long) selection);
         });
-        return view;
+
+        return binding.getRoot();
     }
 }
