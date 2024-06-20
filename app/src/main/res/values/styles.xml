@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo para TextInputEditText con aspecto de reloj digital -->
+    <style name="ClockTextInputEditTextStyle">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/digital7</item>
+        <item name="android:textAlignment">center</item>
+        <!-- Otros atributos de estilo que desees -->
+    </style>
+
+</resources>

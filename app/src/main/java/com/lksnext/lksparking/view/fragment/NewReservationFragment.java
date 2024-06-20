@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +55,6 @@ public class NewReservationFragment extends Fragment {
         FragmentNewReservationBinding binding = FragmentNewReservationBinding.inflate(inflater, container, false);
         ReservationViewModel reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
         binding.setReservationViewModel(reservationViewModel);
-        binding.setLifecycleOwner(this);
 
         MaterialDatePicker<Long> datePicker ;
 
@@ -68,6 +70,12 @@ public class NewReservationFragment extends Fragment {
 
         // Manejar la fecha seleccionada y actualizar el ViewModel
         datePicker.addOnPositiveButtonClickListener(reservationViewModel::setSelectedDate);
+
+        Button reservarButton = binding.reservarButton;
+        reservarButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigate(R.id.reservationTimeFragment);
+        });
 
         return binding.getRoot();
     }

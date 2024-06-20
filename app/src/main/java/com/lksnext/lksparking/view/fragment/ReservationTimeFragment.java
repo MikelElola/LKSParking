@@ -38,11 +38,12 @@ public class ReservationTimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view= inflater.inflate(R.layout.fragment_reservation_time, container, false);
-       TextInputEditText timeInputEditText = view.findViewById(R.id.start_time_input_edit_text);
+       TextInputEditText startTimeText = view.findViewById(R.id.start_time_input_edit_text);
+        TextInputEditText endTimeText = view.findViewById(R.id.end_time_input_edit_text);
 
        ReservationViewModel reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
-       timeInputEditText.setOnClickListener(v -> reservationViewModel.showTimePicker(getChildFragmentManager(),timeInputEditText));
-
+       startTimeText.setOnClickListener(v -> reservationViewModel.showTimePicker(getChildFragmentManager(),startTimeText));
+       endTimeText.setOnClickListener(v -> reservationViewModel.showTimePicker(getChildFragmentManager(),endTimeText));
        return view;
     }
 }
