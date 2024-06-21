@@ -49,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     //Login incorrecto
+                    // Mostrar un mensaje de error en los campos de correo electrónico y contraseña
+                    binding.email.setError("Email o contraseña incorrectos");
+                    binding.password.setError("Email o contraseña incorrectos");
                 }
             }
         });

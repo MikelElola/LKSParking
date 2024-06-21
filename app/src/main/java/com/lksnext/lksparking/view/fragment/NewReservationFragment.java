@@ -76,7 +76,18 @@ public class NewReservationFragment extends Fragment {
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.reservationTimeFragment);
         });
-
+        /**
+         *
+         * EJEMPLO DE CAMBIAR UN TEXTO CON LA INFORMACION DE LA BD
+        TextView dbText= binding.databaseText;
+        Button dbButton = binding.databasebutton;
+        dbButton.setOnClickListener(v -> reservationViewModel.addReserva());
+        reservationViewModel.getReservaData().observe(getViewLifecycleOwner(), reservaData -> {
+            // Actualizar la interfaz de usuario con el nuevo valor de reservaData
+            // Por ejemplo, mostrarlo en un TextView
+            dbText.setText(reservaData);
+        });
+        */
         return binding.getRoot();
     }
 }

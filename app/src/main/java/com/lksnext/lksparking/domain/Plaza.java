@@ -5,13 +5,16 @@ public class Plaza {
     long id;
     String tipo;
 
+    int pos;
+
     public Plaza() {
 
     }
 
-    public Plaza(long id, String tipo) {
+    public Plaza(long id, String tipo, int pos) {
         this.id = id;
         this.tipo = tipo;
+        this.pos = pos;
     }
 
     public String getTipo() {
@@ -28,5 +31,13 @@ public class Plaza {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 }

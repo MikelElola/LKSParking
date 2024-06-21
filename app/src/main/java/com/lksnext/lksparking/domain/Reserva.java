@@ -44,20 +44,28 @@ public class Reserva {
         this.plaza = plaza;
     }
 
-    public Hora getHoraInicio() {
+    public Hora getHora() {
         return hora;
     }
 
-    public void setHoraInicio(Hora hora) {
+    public void setHora(Hora hora) {
         this.hora = hora;
     }
 
-    public Hora getHoraFin() {
-        return hora;
+    public long getHoraInicio() {
+        return hora.getHoraInicio();
     }
 
-    public void setHoraFin(Hora hora) {
-        this.hora = hora;
+    public void setHoraInicio(long hora) {
+        this.hora.setHoraInicio(hora);
+    }
+
+    public long getHoraFin() {
+        return hora.getHoraFin();
+    }
+
+    public void setHoraFin(long hora) {
+        this.hora.setHoraFin(hora);
     }
 
     public String getId() {

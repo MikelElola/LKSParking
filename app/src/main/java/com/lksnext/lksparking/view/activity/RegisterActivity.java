@@ -40,6 +40,9 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     //Login incorrecto
+                    binding.email.setError("Email o contraseña incorrectos");
+                    binding.password.setError("Email o contraseña incorrectos");
+                    binding.password2.setError("Email o contraseña incorrectos");
                 }
             }
         });
