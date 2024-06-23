@@ -46,48 +46,25 @@
         app:layout_constraintTop_toBottomOf="@+id/textReservas">
 
         <LinearLayout
+            android:id="@+id/reservasContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/textReservas">
 
-            <include
+           <!-- <include
                 android:id="@+id/item1"
                 layout="@layout/item_reserva_historial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
-            <include
-                android:id="@+id/item2"
-                layout="@layout/item_reserva_historial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-            <include
-                android:id="@+id/item3"
-                layout="@layout/item_reserva_historial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-            <include
-                android:id="@+id/item4"
-                layout="@layout/item_reserva_historial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-            <include
-                android:id="@+id/item5"
-                layout="@layout/item_reserva_historial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-            <include
-                android:id="@+id/item6"
-                layout="@layout/item_reserva_historial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
+            -->
+        <!--<TextView
+            android:id="@+id/textPrueba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            />-->
         </LinearLayout>
 
     </ScrollView>

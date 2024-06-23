@@ -76,6 +76,10 @@ public class NewReservationFragment extends Fragment {
             NavController navController = Navigation.findNavController(v);
             navController.navigate(R.id.reservationTimeFragment);
         });
+
+        Button dbButton = binding.databasebutton;
+        dbButton.setOnClickListener(v -> reservationViewModel.addReserva());
+
         /**
          *
          * EJEMPLO DE CAMBIAR UN TEXTO CON LA INFORMACION DE LA BD

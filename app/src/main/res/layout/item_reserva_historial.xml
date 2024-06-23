@@ -17,13 +17,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="18/03/2024"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:text="Date"
         android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vehicle_icon"

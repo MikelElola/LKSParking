@@ -1,5 +1,7 @@
 package com.lksnext.lksparking.data;
 
+import android.util.Log;
+
 import androidx.recyclerview.widget.AsyncListUtil;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,12 +23,23 @@ public class DataRepository {
         db = FirebaseFirestore.getInstance();
     }
 
+
     //Creación de la instancia en caso de que no exista.
     public static synchronized DataRepository getInstance(){
         if (instance==null){
             instance = new DataRepository();
         }
         return instance;
+    }
+
+    public interface ReservasCallback<T> {
+        void onSuccess(T result);
+        void onFailure();
+    }
+
+    public interface Callback {
+        void onSuccess();
+        void onFailure();
     }
 
     //Petición del login.
@@ -57,16 +70,22 @@ public class DataRepository {
     public void addReserva(Reserva reserva, Callback callback) {
         db.collection("reservas").add(reserva)
                 .addOnSuccessListener(documentReference -> {
-                    reserva.setId(documentReference.getId());
-                    callback.onSuccess();
-                })
-                .addOnFailureListener(e -> {
-                    callback.onFailure();
+                    String generatedId = documentReference.getId();
+                    reserva.setId(generatedId);
+                    documentReference.update("id", generatedId) // Actualiza el campo id en Firestore
+                            .addOnSuccessListener(aVoid -> {
+                                Log.i("MiApp", "ID de la reserva: " + reserva.getId());
+                                callback.onSuccess();
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("MiApp", "Error al actualizar el ID de la reserva", e);
+                                callback.onFailure();
+                            });
                 });
     }
 
     // Obtener todas las reservas
-    public List<Reserva> getReservas(Callback callback) {
+    public List<Reserva> getReservas(ReservasCallback<List<Reserva>> callback) {
         List<Reserva> reservas = new ArrayList<>();
         db.collection("reservas").get()
                 .addOnCompleteListener(task -> {
@@ -76,7 +95,7 @@ public class DataRepository {
                             reserva.setId(document.getId());
                             reservas.add(reserva);
                         }
-                        callback.onSuccess();
+                        callback.onSuccess(reservas);
                     } else {
                         callback.onFailure();
                     }
@@ -96,5 +115,32 @@ public class DataRepository {
         db.collection("reservas").document(id).delete()
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure());
+    }
+
+    public void getReservasPorMes(int mes, int year, ReservasCallback<List<Reserva>> callback) {
+        List<Reserva> reservas = new ArrayList<>();
+        db.collection("reservas").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Reserva reserva = document.toObject(Reserva.class);
+                            reserva.setId(document.getId());
+
+                            // Extraer el mes y el año de la fecha
+                            String fecha = reserva.getFecha();
+                            String[] partes = fecha.split("-");
+                            int yearReserva = Integer.parseInt(partes[0]);
+                            int mesReserva = Integer.parseInt(partes[1]);
+                            // Filtrar por mes y año
+                            if (yearReserva == year && mesReserva == mes) {
+                                reservas.add(reserva);
+                                Log.i("MiApp", "Reserva agregada: " + reserva.toString());
+                            }
+                        }
+                        callback.onSuccess(reservas);
+                    } else {
+                        callback.onFailure();
+                    }
+                });
     }
 }

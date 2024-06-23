@@ -1,9 +1,13 @@
 package com.lksnext.lksparking.data;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.PropertyName;
+
+@IgnoreExtraProperties
 public enum TipoVehiculo {
-    NORMAL("normal"),
-    ELECTRICO("eléctrico"),
-    MOTO("moto");
+    NORMAL("Normal"),
+    ELECTRICO("Eléctrico"),
+    MOTO("Moto");
 
     private final String tipo;
 
@@ -14,5 +18,19 @@ public enum TipoVehiculo {
     @Override
     public String toString() {
         return tipo;
+    }
+
+    @PropertyName("tipo") // Nombre del campo en Firestore
+    public String getTipo() {
+        return tipo;
+    }
+
+    public static TipoVehiculo fromString(String tipo) {
+        for (TipoVehiculo tv : TipoVehiculo.values()) {
+            if (tv.tipo.equalsIgnoreCase(tipo)) {
+                return tv;
+            }
+        }
+        return null; // Manejo del caso donde no se encuentre
     }
 }

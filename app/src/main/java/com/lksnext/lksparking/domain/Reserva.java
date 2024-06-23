@@ -12,12 +12,11 @@ public class Reserva {
 
     }
 
-    public Reserva(String fecha, String usuario, String id, Plaza plaza, Hora hora) {
+    public Reserva(String fecha, String usuario, Plaza plaza, Hora hora) {
         this.fecha = fecha;
         this.usuario = usuario;
         this.plaza = plaza;
         this.hora = hora;
-        this.id = id;
     }
 
     public String getFecha() {
@@ -36,11 +35,11 @@ public class Reserva {
         this.usuario = usuario;
     }
 
-    public Plaza getPlazaId() {
+    public Plaza getPlaza() {
         return plaza;
     }
 
-    public void setPlazaId(Plaza plaza) {
+    public void setPlaza(Plaza plaza) {
         this.plaza = plaza;
     }
 
@@ -50,22 +49,6 @@ public class Reserva {
 
     public void setHora(Hora hora) {
         this.hora = hora;
-    }
-
-    public long getHoraInicio() {
-        return hora.getHoraInicio();
-    }
-
-    public void setHoraInicio(long hora) {
-        this.hora.setHoraInicio(hora);
-    }
-
-    public long getHoraFin() {
-        return hora.getHoraFin();
-    }
-
-    public void setHoraFin(long hora) {
-        this.hora.setHoraFin(hora);
     }
 
     public String getId() {
