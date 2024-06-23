@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lksnext.lksparking.data.DataRepository;
 import com.lksnext.lksparking.domain.Callback;
 import com.lksnext.lksparking.domain.Reserva;
@@ -19,6 +21,7 @@ public class VerReservasViewModel extends ViewModel {
     private final MutableLiveData<String> mesActual = new MutableLiveData<>();
     private final MutableLiveData<Integer> yearActual = new MutableLiveData<>();
     private final MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
+    private FirebaseAuth firebaseAuth;
 
     public LiveData<String> getMesActual() {
         return mesActual;
@@ -36,11 +39,16 @@ public class VerReservasViewModel extends ViewModel {
         String mes = nombresMeses[mesNum];
         mesActual.setValue(mes);
         yearActual.setValue(year);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public void getReservasMes(){
         Calendar calendar = Calendar.getInstance();
-        DataRepository.getInstance().getReservasPorMes(calendar.get(Calendar.MONTH)+1,yearActual.getValue(),new DataRepository.ReservasCallback<List<Reserva>>() {
+        int month = calendar.get(Calendar.MONTH)+1;
+        int year = yearActual.getValue();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
+        DataRepository.getInstance().getReservasPorMes(month,year, usuario, new DataRepository.ReservasCallback<List<Reserva>>() {
             @Override
             public void onSuccess(List<Reserva> reservasObtenidas) {
                 reservas.setValue(reservasObtenidas);

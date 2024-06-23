@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lksnext.lksparking.data.DataRepository;
 import com.lksnext.lksparking.data.TipoVehiculo;
 import com.lksnext.lksparking.domain.Callback;
@@ -25,23 +27,27 @@ import java.util.Locale;
 
 public class ReservationViewModel extends ViewModel {
 
-    private MutableLiveData<String> reservaData = new MutableLiveData<>();
     private MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
-
     private MutableLiveData<String> selectedDate = new MutableLiveData<>();
+    private MutableLiveData<Long> selectedStartTime = new MutableLiveData<>();
+    private MutableLiveData<Long> selectedEndTime = new MutableLiveData<>();
+    private FirebaseAuth firebaseAuth;
 
     public LiveData<String> getSelectedDate() {
         return selectedDate;
     }
+    public MutableLiveData<Long> getSelectedStartTime() {return selectedStartTime;}
+    public MutableLiveData<Long> getSelectedEndTime() {return selectedEndTime;}
 
     public ReservationViewModel() {
         // Inicializa con la fecha actual
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = sdf.format(new Date());
         selectedDate.setValue(currentDate);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void showTimePicker(FragmentManager fragmentManager, TextInputEditText timeInputEditText) {
+    public void showTimePicker(FragmentManager fragmentManager, TextInputEditText timeInputEditText, boolean esInicio) {
         MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setHour(12)
@@ -54,6 +60,12 @@ public class ReservationViewModel extends ViewModel {
             int minute = timePicker.getMinute();
             String formattedTime = String.format("%02d:%02d", hour, minute);
             timeInputEditText.setText(formattedTime);
+            long selectedTime = hour * 60 + minute;
+            if (esInicio) {
+                selectedStartTime.setValue(selectedTime);
+            } else {
+                selectedEndTime.setValue(selectedTime);
+            }
         });
 
         timePicker.show(fragmentManager, "timePicker");
@@ -72,34 +84,35 @@ public class ReservationViewModel extends ViewModel {
 
     //PARA PROBAR
     public Reserva crearReservaEjemplo() {
+        // Obtener usuario autenticado
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
         // Aquí puedes crear un objeto Reserva con datos de ejemplo
-        String fecha = "2024-06-28";
-        String usuario = "usuario5";
+        String fecha = "2024-06-10";
         Plaza plaza = new Plaza(5, TipoVehiculo.ELECTRICO, 5);
-        Hora hora = new Hora(17, 30);
+        Hora hora = new Hora(1200, 1545);
 
         // Crear objeto Reserva con los datos
         return new Reserva(fecha, usuario, plaza, hora);
     }
 
+    public void addReserva(String selectedDate, Plaza plaza, Hora hora) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
 
-    public LiveData<String> getReservaData() {
-        return reservaData;
-    }
-    public void addReserva() {
-        Reserva reserva = crearReservaEjemplo();
-        String TAG = "MiApp";
+        Reserva reserva = new Reserva(selectedDate, usuario, plaza, hora);
         DataRepository.getInstance().addReserva(reserva, new DataRepository.Callback() {
             @Override
             public void onSuccess() {
-                Log.i(TAG, "Reserva añadida correctamente");
+                Log.i("MiApp", "Reserva añadida correctamente");
             }
 
             @Override
             public void onFailure() {
-                reservaData.setValue("ERROR AL AÑADIR RESERVA");
-                Log.e(TAG, "Todo mal");
+                Log.e("MiApp", "Todo mal");
             }
         });
     }
+
+
 }

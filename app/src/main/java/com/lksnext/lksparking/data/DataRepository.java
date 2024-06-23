@@ -12,6 +12,7 @@ import com.lksnext.lksparking.domain.Reserva;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataRepository {
 
@@ -117,7 +118,7 @@ public class DataRepository {
                 .addOnFailureListener(e -> callback.onFailure());
     }
 
-    public void getReservasPorMes(int mes, int year, ReservasCallback<List<Reserva>> callback) {
+    public void getReservasPorMes(int mes, int year, String usuario, ReservasCallback<List<Reserva>> callback) {
         List<Reserva> reservas = new ArrayList<>();
         db.collection("reservas").get()
                 .addOnCompleteListener(task -> {
@@ -129,10 +130,11 @@ public class DataRepository {
                             // Extraer el mes y el año de la fecha
                             String fecha = reserva.getFecha();
                             String[] partes = fecha.split("-");
-                            int yearReserva = Integer.parseInt(partes[0]);
                             int mesReserva = Integer.parseInt(partes[1]);
+                            int yearReserva = Integer.parseInt(partes[2]);
+                            String usuarioReserva = reserva.getUsuario();
                             // Filtrar por mes y año
-                            if (yearReserva == year && mesReserva == mes) {
+                            if (yearReserva == year && mesReserva == mes && Objects.equals(usuarioReserva, usuario)) {
                                 reservas.add(reserva);
                                 Log.i("MiApp", "Reserva agregada: " + reserva.toString());
                             }
@@ -142,5 +144,10 @@ public class DataRepository {
                         callback.onFailure();
                     }
                 });
+    }
+
+    //TODO
+    public void getReservasVigentes(int mes, int year, String usuario, ReservasCallback<List<Reserva>> callback){
+        getReservasPorMes(mes,year,usuario,callback);
     }
 }

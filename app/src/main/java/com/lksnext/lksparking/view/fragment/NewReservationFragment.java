@@ -19,7 +19,9 @@ import android.widget.TextView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import com.lksnext.lksparking.R;
+import com.lksnext.lksparking.data.TipoVehiculo;
 import com.lksnext.lksparking.databinding.FragmentNewReservationBinding;
+import com.lksnext.lksparking.domain.Plaza;
 import com.lksnext.lksparking.view.activity.LoginActivity;
 import com.lksnext.lksparking.view.activity.MainActivity;
 import com.lksnext.lksparking.viewmodel.RegisterViewModel;
@@ -56,10 +58,8 @@ public class NewReservationFragment extends Fragment {
         ReservationViewModel reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
         binding.setReservationViewModel(reservationViewModel);
 
-        MaterialDatePicker<Long> datePicker ;
-
         // Configurar el DatePicker
-        datePicker = MaterialDatePicker.Builder.datePicker()
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
@@ -70,14 +70,27 @@ public class NewReservationFragment extends Fragment {
 
         // Manejar la fecha seleccionada y actualizar el ViewModel
         datePicker.addOnPositiveButtonClickListener(reservationViewModel::setSelectedDate);
+        // Observar cambios en selectedDate y actualizar la vista
+        final TextView dateText = binding.dateText;
+        reservationViewModel.getSelectedDate().observe(getViewLifecycleOwner(), dateText::setText);
 
         Button reservarButton = binding.reservarButton;
         reservarButton.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(v);
-            navController.navigate(R.id.reservationTimeFragment);
+
+            String selectedDate = reservationViewModel.getSelectedDate().getValue();
+            selectedDate = selectedDate.replace("/","-");
+            Plaza plaza = new Plaza(5, TipoVehiculo.NORMAL, 5);
+
+            // Crear el Bundle con los datos
+            Bundle bundle = new Bundle();
+            bundle.putString("selectedDate", selectedDate);
+            bundle.putParcelable("plaza", plaza);
+
+            navController.navigate(R.id.reservationTimeFragment, bundle);
         });
 
-        Button dbButton = binding.databasebutton;
+       /* Button dbButton = binding.databasebutton;
         dbButton.setOnClickListener(v -> reservationViewModel.addReserva());
 
         /**

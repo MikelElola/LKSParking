@@ -1,9 +1,14 @@
 package com.lksnext.lksparking.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.PropertyName;
 import com.lksnext.lksparking.data.TipoVehiculo;
 
-public class Plaza {
+public class Plaza implements Parcelable {
 
     long id;
     TipoVehiculo tipo;
@@ -18,6 +23,11 @@ public class Plaza {
         this.id = id;
         this.tipo = tipo;
         this.pos = pos;
+    }
+    protected Plaza(Parcel in) {
+        id = in.readLong();
+        tipo = TipoVehiculo.valueOf(in.readString());
+        pos = in.readInt();
     }
     @PropertyName("tipo")
     public String getTipo() {
@@ -44,4 +54,28 @@ public class Plaza {
     public void setPos(int pos) {
         this.pos = pos;
     }
+
+    public static final Creator<Plaza> CREATOR = new Creator<Plaza>() {
+        @Override
+        public Plaza createFromParcel(Parcel in) {
+            return new Plaza(in);
+        }
+
+        @Override
+        public Plaza[] newArray(int size) {
+            return new Plaza[size];
+        }
+    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(tipo.name());
+        dest.writeInt(pos);
+    }
+
 }

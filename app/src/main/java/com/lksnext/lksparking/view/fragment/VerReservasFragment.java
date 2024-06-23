@@ -80,8 +80,6 @@ public class VerReservasFragment extends Fragment {
         LinearLayout reservasContainer = binding.reservasContainer;
         View reservaView = inflater.inflate(R.layout.item_reserva_historial, null);
 
-        //Plaza plaza = reserva.getPlaza();
-        //Log.e("MiApp", "Mi reserva: " + plaza.toString());
         ImageView vehicleIcon = reservaView.findViewById(R.id.vehicle_icon);
         vehicleIcon.setImageResource(R.drawable.car_24);
         switch (reserva.getPlaza().getTipo()) {
@@ -100,6 +98,7 @@ public class VerReservasFragment extends Fragment {
         }
         TextView dateTextView = reservaView.findViewById(R.id.textDate);
         dateTextView.setText(reserva.getFecha());
+
 
         // Agregar la vista de reserva al contenedor
         reservasContainer.addView(reservaView);

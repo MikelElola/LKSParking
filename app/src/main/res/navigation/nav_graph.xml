@@ -51,5 +51,11 @@
         <action
             android:id="@+id/action_reservationTimeFragment_to_newReservationFragment"
             app:destination="@id/newReservationFragment" />
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
+        <argument
+            android:name="plaza"
+            app:argType="com.lksnext.lksparking.domain.Plaza" />
     </fragment>
 </navigation>
