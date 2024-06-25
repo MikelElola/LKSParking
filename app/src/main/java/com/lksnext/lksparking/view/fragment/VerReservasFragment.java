@@ -55,11 +55,7 @@ public class VerReservasFragment extends Fragment {
         binding.setVerReservasViewModel(verReservasViewModel);
 
         verReservasViewModel.getReservasMes();
-        /*TextView textPrueba = binding.textPrueba;
 
-        verReservasViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
-            textPrueba.setText(reservas.toString());
-        });*/
         // Observar cambios en la lista de reservas
         verReservasViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
             if (reservas != null) {

@@ -10,7 +10,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.lksnext.lksparking.domain.Callback;
 import com.lksnext.lksparking.domain.Reserva;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,8 +150,65 @@ public class DataRepository {
                 });
     }
 
-    //TODO
-    public void getReservasVigentes(int mes, int year, String usuario, ReservasCallback<List<Reserva>> callback){
-        getReservasPorMes(mes,year,usuario,callback);
+    public void getReservasPorFecha(String fecha, ReservasCallback<List<Reserva>> callback) {
+        List<Reserva> reservas = new ArrayList<>();
+        db.collection("reservas").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Reserva reserva = document.toObject(Reserva.class);
+                            reserva.setId(document.getId());
+
+                            String fechaReserva = reserva.getFecha().replace("-", "/");
+
+                            // Filtrar por fecha
+                            if (fechaReserva.equals(fecha)) {
+                                reservas.add(reserva);
+                                Log.i("MiApp", "Reserva en la fecha seleccionada: " + fecha + " - " + reserva.toString());
+                            }
+                        }
+                        callback.onSuccess(reservas);
+                    } else {
+                        callback.onFailure();
+                    }
+                });
+    }
+
+    public void getReservasVigentes(long tiempoActual,String usuario, ReservasCallback<List<Reserva>> callback){
+        List<Reserva> reservasVigentes = new ArrayList<>();
+        db.collection("reservas").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Reserva reserva = document.toObject(Reserva.class);
+                            reserva.setId(document.getId());
+
+                            String fechaReserva = reserva.getFecha();
+                            long horaFin = reserva.getHora().getHoraFin();
+                            String usuarioReserva = reserva.getUsuario();
+                            // Convertir la fecha de la reserva a milisegundos
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            try {
+                                Date fechaReservaDate = dateFormat.parse(fechaReserva);
+                                Calendar calReserva = Calendar.getInstance();
+                                calReserva.setTime(fechaReservaDate);
+                                calReserva.add(Calendar.MINUTE, (int) horaFin);
+
+                                long tiempoReservaFin = calReserva.getTimeInMillis();
+
+                                // Filtrar reservas vigentes
+                                if (tiempoReservaFin > tiempoActual && Objects.equals(usuarioReserva, usuario)) {
+                                    reservasVigentes.add(reserva);
+                                    Log.i("MiApp", "Reserva vigente agregada: " + reserva.toString());
+                                }
+                            } catch (ParseException e) {
+                                Log.e("MiApp", "Error al parsear la fecha de la reserva", e);
+                            }
+                        }
+                        callback.onSuccess(reservasVigentes);
+                    } else {
+                        callback.onFailure();
+                    }
+                });
     }
 }

@@ -1,33 +1,46 @@
 package com.lksnext.lksparking.view.fragment;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import com.lksnext.lksparking.R;
+import com.lksnext.lksparking.data.DataRepository;
 import com.lksnext.lksparking.data.TipoVehiculo;
 import com.lksnext.lksparking.databinding.FragmentNewReservationBinding;
+import com.lksnext.lksparking.databinding.FragmentVigentesBinding;
 import com.lksnext.lksparking.domain.Plaza;
+import com.lksnext.lksparking.domain.Reserva;
 import com.lksnext.lksparking.view.activity.LoginActivity;
 import com.lksnext.lksparking.view.activity.MainActivity;
 import com.lksnext.lksparking.viewmodel.RegisterViewModel;
 import com.lksnext.lksparking.viewmodel.ReservationViewModel;
+import com.lksnext.lksparking.viewmodel.VigentesViewModel;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +85,12 @@ public class NewReservationFragment extends Fragment {
         datePicker.addOnPositiveButtonClickListener(reservationViewModel::setSelectedDate);
         // Observar cambios en selectedDate y actualizar la vista
         final TextView dateText = binding.dateText;
-        reservationViewModel.getSelectedDate().observe(getViewLifecycleOwner(), dateText::setText);
+        reservationViewModel.getSelectedDate().observe(getViewLifecycleOwner(), selectedDate -> {
+            dateText.setText(selectedDate);
+
+            // Obtener reservas para la fecha seleccionada
+            reservationViewModel.getReservasDia();
+        });
 
         Button reservarButton = binding.reservarButton;
         reservarButton.setOnClickListener(v -> {
@@ -90,9 +108,10 @@ public class NewReservationFragment extends Fragment {
             navController.navigate(R.id.reservationTimeFragment, bundle);
         });
 
-       /* Button dbButton = binding.databasebutton;
-        dbButton.setOnClickListener(v -> reservationViewModel.addReserva());
-
+        reservationViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
+            // Llamar a la función crearPlano para actualizar los botones según las reservas
+            crearPlano(binding, reservas);
+        });
         /**
          *
          * EJEMPLO DE CAMBIAR UN TEXTO CON LA INFORMACION DE LA BD
@@ -106,5 +125,48 @@ public class NewReservationFragment extends Fragment {
         });
         */
         return binding.getRoot();
+    }
+    public void crearPlano(FragmentNewReservationBinding binding, List<Reserva> reservas) {
+        Map<Integer, Button> botones = new HashMap<>();
+        Map<Integer, ImageButton> imageButtons = new HashMap<>();
+
+        Button[] botonesArray = {
+                binding.pos1, binding.pos2, binding.pos3, binding.pos4, binding.pos5,
+                binding.pos6, binding.pos7, binding.pos8, binding.pos9, binding.pos10,
+                binding.pos11
+        };
+        for (int i = 0; i < botonesArray.length; i++) {
+            botones.put(i + 1, botonesArray[i]);// Coloca en el HashMap, la posición comienza desde 1
+            Button buttonInicial = botones.get(i+1);
+            buttonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.free_parkingslot)));
+        }
+        ImageButton[] imageButtonsArray = {
+                binding.pos14, binding.pos15, binding.pos16,
+                binding.pos17, binding.pos18, binding.pos19
+        };
+        for (int i = 0; i < imageButtonsArray.length; i++) {
+            imageButtons.put(14 + i , imageButtonsArray[i]);  // Coloca en el HashMap, la posición comienza desde 14
+            ImageButton iButtonInicial = imageButtons.get(14+i);
+            iButtonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.free_parkingslot)));
+
+        }
+
+        // Iterar sobre las reservas y actualizar los colores de fondo
+        for (Reserva reserva : reservas) {
+            int pos = reserva.getPlaza().getPos(); // Obtener la posición de la reserva
+            // Verificar si la posición está en el HashMap de botones
+            if (botones.containsKey(pos)) {
+                Log.i("MiApp", "Reserva añadida en la plaza normal " + pos);
+                Button button = botones.get(pos);
+                button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.occupied_parkingslot)));
+            }
+
+            // Verificar si la posición está en el HashMap de imageButtons
+            if (imageButtons.containsKey(pos)) {
+                Log.i("MiApp", "Reserva añadida en la plaza imagen " + pos);
+                ImageButton imageButton = imageButtons.get(pos);
+                imageButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.occupied_parkingslot)));
+            }
+        }
     }
 }

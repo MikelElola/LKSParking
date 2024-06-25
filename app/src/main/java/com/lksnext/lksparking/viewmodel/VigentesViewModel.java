@@ -37,30 +37,29 @@ public class VigentesViewModel extends ViewModel {
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void getReservasMes(){
+    public void getReservasVigentes(){
         Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH)+1;
-        int year = yearActual.getValue();
+        long tiempoActual = calendar.getTimeInMillis();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
-        DataRepository.getInstance().getReservasPorMes(month,year, usuario, new DataRepository.ReservasCallback<List<Reserva>>() {
+        DataRepository.getInstance().getReservasVigentes(tiempoActual, usuario, new DataRepository.ReservasCallback<List<Reserva>>() {
             @Override
             public void onSuccess(List<Reserva> reservasObtenidas) {
                 reservas.setValue(reservasObtenidas);
-                Log.i("MiApp", "Reservas obtenidas para el mes " + mesActual.getValue() + " del año " + yearActual.getValue());
+                Log.i("MiApp", "Reservas vigentes obtenidas para el usuario " + usuario);
             }
 
             @Override
             public void onFailure() {
-                Log.e("MiApp", "Error al obtener reservas del mes");
+                Log.e("MiApp", "Error al obtener reservas vigentes");
             }
         });
     }
 
     public String formatHour(long hora) {
         // Asumiendo que el formato es HHMM
-        int parteHora = (int) (hora / 100);  // Extraer la parte de la hora
-        int parteMinuto = (int) (hora % 100); // Extraer la parte de los minutos
+        int parteHora = (int) (hora / 60);  // Extraer la parte de la hora
+        int parteMinuto = (int) (hora % 60); // Extraer la parte de los minutos
 
         return String.format("%02d:%02d", parteHora, parteMinuto); // Formato HH:mm
     }

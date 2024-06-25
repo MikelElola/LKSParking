@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridLayout"
-    android:layout_width="match_parent"
-    android:layout_height="500dp"
-    android:layout_marginTop="30dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:alignmentMode="alignMargins"
-    android:columnCount="7"
-    android:padding="0dp"
-    android:rowCount="6"
-    android:gravity="fill"
-    android:background="@color/md_theme_outline">-->
 <GridLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,6 +13,7 @@
     android:background="@color/md_theme_outline">
 
     <Button
+        android:id="@+id/pos1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -37,6 +24,7 @@
         app:strokeWidth="2sp" />
 
     <Button
+        android:id="@+id/pos2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -47,35 +35,29 @@
         app:strokeWidth="2sp" />
 
     <Button
+        android:id="@+id/pos3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
 
     <Button
+        android:id="@+id/pos4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
 
     <Button
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
-        app:cornerRadius="0dp"
-        app:strokeColor="@color/black"
-        app:strokeWidth="2sp" />
-    <Button
+        android:id="@+id/pos5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -85,11 +67,22 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <Button
+        android:id="@+id/pos6"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
+        app:cornerRadius="0dp"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2sp" />
+    <Button
+        android:id="@+id/pos7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
@@ -105,27 +98,31 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/pos8"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:background="?attr/selectableItemBackground" />
     <Button
+        android:id="@+id/pos9"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:background="?attr/selectableItemBackground" />
     <Button
+        android:id="@+id/pos10"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <Button
+        android:id="@+id/pos11"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -135,6 +132,7 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos12"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -146,24 +144,26 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos13"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:src="@drawable/baseline_accessible_40"
         android:background="@drawable/square_button_background"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos14"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:src="@drawable/baseline_accessible_40"
         android:background="@drawable/square_button_background"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
@@ -177,6 +177,7 @@
         android:background="@color/md_theme_outline">
     </LinearLayout>
     <Button
+        android:id="@+id/pos15"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -186,26 +187,17 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <Button
+        android:id="@+id/pos16"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:src="@drawable/baseline_electric_40"
-        android:background="@drawable/square_button_background"
-        app:backgroundTint="@color/occupied_parkingslot"
-        app:cornerRadius="0dp"
-        app:strokeColor="@color/black"
-        app:strokeWidth="2sp" />
-    <ImageButton
+        android:id="@+id/pos17"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -217,6 +209,7 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos18"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -228,6 +221,7 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos19"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
@@ -239,13 +233,26 @@
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />
     <ImageButton
+        android:id="@+id/pos20"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:src="@drawable/baseline_electric_40"
         android:background="@drawable/square_button_background"
-        app:backgroundTint="@color/occupied_parkingslot"
+        app:backgroundTint="@color/free_parkingslot"
+        app:cornerRadius="0dp"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2sp" />
+    <ImageButton
+        android:id="@+id/pos21"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:src="@drawable/baseline_electric_40"
+        android:background="@drawable/square_button_background"
+        app:backgroundTint="@color/free_parkingslot"
         app:cornerRadius="0dp"
         app:strokeColor="@color/black"
         app:strokeWidth="2sp" />

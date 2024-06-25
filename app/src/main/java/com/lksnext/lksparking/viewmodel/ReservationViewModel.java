@@ -33,6 +33,7 @@ public class ReservationViewModel extends ViewModel {
     private MutableLiveData<Long> selectedEndTime = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
 
+    public LiveData<List<Reserva>> getReservas() { return reservas; }
     public LiveData<String> getSelectedDate() {
         return selectedDate;
     }
@@ -45,6 +46,7 @@ public class ReservationViewModel extends ViewModel {
         String currentDate = sdf.format(new Date());
         selectedDate.setValue(currentDate);
         firebaseAuth = FirebaseAuth.getInstance();
+        getReservasDia();
     }
 
     public void showTimePicker(FragmentManager fragmentManager, TextInputEditText timeInputEditText, boolean esInicio) {
@@ -82,6 +84,24 @@ public class ReservationViewModel extends ViewModel {
         selectedDate.setValue(formattedDate);
     }
 
+    public void getReservasDia() {
+        String fecha = selectedDate.getValue();
+        if (fecha != null) {
+            DataRepository.getInstance().getReservasPorFecha(fecha, new DataRepository.ReservasCallback<List<Reserva>>() {
+                @Override
+                public void onSuccess(List<Reserva> reservasList) {
+                    reservas.setValue(reservasList);
+                }
+
+                @Override
+                public void onFailure() {
+                    // Manejo de error, puedes añadir un mensaje de log o alguna acción adicional
+                    Log.e("MiApp", "Error al obtener las reservas");
+                }
+            });
+        }
+    }
+
     //PARA PROBAR
     public Reserva crearReservaEjemplo() {
         // Obtener usuario autenticado
@@ -113,6 +133,7 @@ public class ReservationViewModel extends ViewModel {
             }
         });
     }
+
 
 
 }

@@ -46,7 +46,7 @@ public class VigentesFragment extends Fragment {
         FragmentVigentesBinding binding = FragmentVigentesBinding.inflate(inflater, container, false);
         VigentesViewModel vigentesViewModel = new ViewModelProvider(this).get(VigentesViewModel.class);
 
-        vigentesViewModel.getReservasMes();
+        vigentesViewModel.getReservasVigentes();
 
         // Observar cambios en la lista de reservas
         vigentesViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {

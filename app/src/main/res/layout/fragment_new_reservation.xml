@@ -13,7 +13,6 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.NewReservationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/dateLinearLayout"
         android:layout_width="wrap_content"
@@ -48,7 +47,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,13 +60,260 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"> <!-- Centrar elementos horizontalmente -->
 
-            <include
-                layout="@layout/item_plano_parking"
+            <GridLayout
                 android:id="@+id/gridLayout"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp" />
+                android:alignmentMode="alignMargins"
+                android:columnCount="7"
+                android:padding="0dp"
+                android:rowCount="6"
+                android:gravity="fill"
+                android:background="@color/md_theme_outline">
+
+                <Button
+                    android:id="@+id/pos1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+
+                <Button
+                    android:id="@+id/pos2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+
+                <Button
+                    android:id="@+id/pos3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+
+                <Button
+                    android:id="@+id/pos4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+
+                <Button
+                    android:id="@+id/pos5"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <Button
+                    android:id="@+id/pos6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <Button
+                    android:id="@+id/pos7"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_columnSpan="7"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:background="@color/md_theme_outline">
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="?attr/selectableItemBackground" />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="?attr/selectableItemBackground" />
+                <Button
+                    android:id="@+id/pos8"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <Button
+                    android:id="@+id/pos9"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos12"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_accessible_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos13"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_accessible_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos14"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_accessible_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_columnSpan="7"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:background="@color/md_theme_outline">
+                </LinearLayout>
+                <Button
+                    android:id="@+id/pos10"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <Button
+                    android:id="@+id/pos11"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos15"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_electric_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos16"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_electric_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos17"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_electric_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos18"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_electric_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+                <ImageButton
+                    android:id="@+id/pos19"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:src="@drawable/baseline_electric_40"
+                    android:background="@drawable/square_button_background"
+                    app:backgroundTint="@color/free_parkingslot"
+                    app:cornerRadius="0dp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2sp" />
+            </GridLayout>
 
             <Button
                 android:id="@+id/reservarButton"
