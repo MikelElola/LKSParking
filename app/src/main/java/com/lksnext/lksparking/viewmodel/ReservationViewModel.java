@@ -29,6 +29,8 @@ public class ReservationViewModel extends ViewModel {
 
     private MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
     private MutableLiveData<String> selectedDate = new MutableLiveData<>();
+    private MutableLiveData<Integer> selectedPos = new MutableLiveData<>();
+    private MutableLiveData<TipoVehiculo> selectedType = new MutableLiveData<>();
     private MutableLiveData<Long> selectedStartTime = new MutableLiveData<>();
     private MutableLiveData<Long> selectedEndTime = new MutableLiveData<>();
     private FirebaseAuth firebaseAuth;
@@ -36,6 +38,15 @@ public class ReservationViewModel extends ViewModel {
     public LiveData<List<Reserva>> getReservas() { return reservas; }
     public LiveData<String> getSelectedDate() {
         return selectedDate;
+    }
+    public MutableLiveData<Integer> getSelectedPos() {return selectedPos;}
+    public void setSelectedPos(int pos) {
+        this.selectedPos.setValue(pos);
+        Log.i("MiApp", "Se ha seleccionado la plaza " + pos);
+    }
+    public MutableLiveData<TipoVehiculo> getSelectedType() {return selectedType;}
+    public void setSelectedType(TipoVehiculo selectedType) {
+        this.selectedType.setValue(selectedType);
     }
     public MutableLiveData<Long> getSelectedStartTime() {return selectedStartTime;}
     public MutableLiveData<Long> getSelectedEndTime() {return selectedEndTime;}

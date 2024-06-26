@@ -2,6 +2,8 @@ package com.lksnext.lksparking.view.fragment;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -98,7 +100,9 @@ public class NewReservationFragment extends Fragment {
 
             String selectedDate = reservationViewModel.getSelectedDate().getValue();
             selectedDate = selectedDate.replace("/","-");
-            Plaza plaza = new Plaza(5, TipoVehiculo.NORMAL, 5);
+            int selectedPos = reservationViewModel.getSelectedPos().getValue();
+            TipoVehiculo selectedType = reservationViewModel.getSelectedType().getValue();
+            Plaza plaza = new Plaza(selectedPos, selectedType, selectedPos);
 
             // Crear el Bundle con los datos
             Bundle bundle = new Bundle();
@@ -127,6 +131,7 @@ public class NewReservationFragment extends Fragment {
         return binding.getRoot();
     }
     public void crearPlano(FragmentNewReservationBinding binding, List<Reserva> reservas) {
+        ReservationViewModel reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
         Map<Integer, Button> botones = new HashMap<>();
         Map<Integer, ImageButton> imageButtons = new HashMap<>();
 
@@ -139,15 +144,40 @@ public class NewReservationFragment extends Fragment {
             botones.put(i + 1, botonesArray[i]);// Coloca en el HashMap, la posición comienza desde 1
             Button buttonInicial = botones.get(i+1);
             buttonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.free_parkingslot)));
+            int finalI = i+1;
+            buttonInicial.setOnClickListener(v -> {
+                    reservationViewModel.setSelectedPos(finalI);
+                    reservationViewModel.setSelectedType(TipoVehiculo.NORMAL);
+            });
         }
         ImageButton[] imageButtonsArray = {
-                binding.pos14, binding.pos15, binding.pos16,
+                binding.pos12, binding.pos13, binding.pos14, binding.pos15, binding.pos16,
                 binding.pos17, binding.pos18, binding.pos19
         };
         for (int i = 0; i < imageButtonsArray.length; i++) {
-            imageButtons.put(14 + i , imageButtonsArray[i]);  // Coloca en el HashMap, la posición comienza desde 14
-            ImageButton iButtonInicial = imageButtons.get(14+i);
+            imageButtons.put(12 + i , imageButtonsArray[i]);  // Coloca en el HashMap, la posición comienza desde 12
+            ImageButton iButtonInicial = imageButtons.get(12+i);
             iButtonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.free_parkingslot)));
+            int finalI = i + 12;
+            if (finalI<=14){
+                //Si se ha elegido una plaza para minusválidos
+                iButtonInicial.setOnClickListener(v -> {
+                    reservationViewModel.setSelectedPos(finalI);
+                    reservationViewModel.setSelectedType(TipoVehiculo.MINUSVALIDO);
+                });
+            } else if (finalI<=16){
+                //Si se ha elegido una plaza para motos
+                iButtonInicial.setOnClickListener(v -> {
+                    reservationViewModel.setSelectedPos(finalI);
+                    reservationViewModel.setSelectedType(TipoVehiculo.MOTO);
+                });
+            } else{
+                //Si se ha elegido una plaza para coches eléctricos
+                iButtonInicial.setOnClickListener(v -> {
+                    reservationViewModel.setSelectedPos(finalI);
+                    reservationViewModel.setSelectedType(TipoVehiculo.ELECTRICO);
+                });
+            }
 
         }
 
@@ -160,7 +190,6 @@ public class NewReservationFragment extends Fragment {
                 Button button = botones.get(pos);
                 button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.occupied_parkingslot)));
             }
-
             // Verificar si la posición está en el HashMap de imageButtons
             if (imageButtons.containsKey(pos)) {
                 Log.i("MiApp", "Reserva añadida en la plaza imagen " + pos);

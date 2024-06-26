@@ -7,7 +7,8 @@ import com.google.firebase.firestore.PropertyName;
 public enum TipoVehiculo {
     NORMAL("Normal"),
     ELECTRICO("Eléctrico"),
-    MOTO("Moto");
+    MOTO("Moto"),
+    MINUSVALIDO("Minusválido");
 
     private final String tipo;
 

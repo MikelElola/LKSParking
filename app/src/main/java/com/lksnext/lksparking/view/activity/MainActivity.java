@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.verReservasFragment);
                 return true;
             }
-            else if (itemId == R.id.person) {
-                //TODO
-            }
             return false;
         });
     }
