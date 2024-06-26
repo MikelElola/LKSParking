@@ -2,6 +2,8 @@ package com.lksnext.lksparking.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,13 +32,46 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(v -> {
             String email = binding.emailText.getText().toString();
             String password = binding.passwordText.getText().toString();
-            loginViewModel.loginUser(email, password);
+            if (!email.isEmpty()) {
+                // Verificar además si el formato del email es válido
+                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    // Iniciar el proceso de recuperación de contraseña
+                    loginViewModel.loginUser(email, password);
+                } else {
+                    // Mostrar un mensaje de error si el formato del email no es válido
+                    binding.email.setError("Por favor ingresa un email válido");
+                }
+            } else {
+                // Mostrar un mensaje de error si el campo de email está vacío
+                binding.email.setError("Por favor proporciona un email");
+            }
+
         });
 
         //Acciones a realizar cuando el usuario clica el boton de crear cuenta (se cambia de pantalla)
         binding.createAccount.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+        });
+
+        binding.forgotPasswordText.setOnClickListener(v -> {
+            String email = binding.emailText.getText().toString();
+            // Aquí inicias el proceso de recuperación de contraseña
+            if (!email.isEmpty()) {
+                // Verificar además si el formato del email es válido
+                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    // Iniciar el proceso de recuperación de contraseña
+                    loginViewModel.initiatePasswordReset(email);
+                    // Mostrar mensaje de éxito usando un Toast
+                    Toast.makeText(LoginActivity.this, "Hemos enviado un correo a tu dirección para restablecer tu contraseña", Toast.LENGTH_LONG).show();
+                } else {
+                    // Mostrar un mensaje de error si el formato del email no es válido
+                    binding.email.setError("Por favor ingresa un email válido");
+                }
+            } else {
+                // Mostrar un mensaje de error si el campo de email está vacío
+                binding.email.setError("Por favor proporciona un email");
+            }
         });
 
         //Observamos la variable logged, la cual nos informara cuando el usuario intente hacer login y se

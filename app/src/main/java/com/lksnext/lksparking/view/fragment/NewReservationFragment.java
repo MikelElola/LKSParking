@@ -67,7 +67,6 @@ public class NewReservationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Usar Data Binding para inflar el layout
         FragmentNewReservationBinding binding = FragmentNewReservationBinding.inflate(inflater, container, false);
         ReservationViewModel reservationViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
@@ -102,7 +101,7 @@ public class NewReservationFragment extends Fragment {
             selectedDate = selectedDate.replace("/","-");
             int selectedPos = reservationViewModel.getSelectedPos().getValue();
             TipoVehiculo selectedType = reservationViewModel.getSelectedType().getValue();
-            Plaza plaza = new Plaza(selectedPos, selectedType, selectedPos);
+            Plaza plaza = new Plaza(selectedType, selectedPos);
 
             // Crear el Bundle con los datos
             Bundle bundle = new Bundle();

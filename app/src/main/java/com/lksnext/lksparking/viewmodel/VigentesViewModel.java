@@ -11,8 +11,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.lksnext.lksparking.data.DataRepository;
 import com.lksnext.lksparking.domain.Reserva;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class VigentesViewModel extends ViewModel {
     private final MutableLiveData<String> mesActual = new MutableLiveData<>();
@@ -64,5 +67,41 @@ public class VigentesViewModel extends ViewModel {
         return String.format("%02d:%02d", parteHora, parteMinuto); // Formato HH:mm
     }
 
+    public void cancelReserva(String id){
+        DataRepository.getInstance().deleteReserva(id, new DataRepository.Callback() {
+            @Override
+            public void onSuccess() {Log.i("MiApp", "Reserva con el id: "+id+" eliminada correctamente");
+            }
 
+            @Override
+            public void onFailure() {Log.e("MiApp", "Error al cancelar la reserva");
+            }
+        });
+    }
+    public boolean isValidTime(String time){
+        // El formato debe ser "HH:mm-HH:mm"
+        String regex = "\\d{2}:\\d{2}-\\d{2}:\\d{2}";
+        if (time.matches(regex)){
+            String[] parts = time.split("-");
+            String startTime = parts[0].trim();
+            String endTime = parts[1].trim();
+            try {
+                // Convertir las horas a objetos Calendar para compararlas
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                Calendar calStart = Calendar.getInstance();
+                calStart.setTime(sdf.parse(startTime));
+                Calendar calEnd = Calendar.getInstance();
+                calEnd.setTime(sdf.parse(endTime));
+
+                // Comparar las horas
+                return calStart.before(calEnd);
+            } catch (ParseException e) {
+                // Manejar errores de análisis de tiempo aquí si es necesario
+                e.printStackTrace();
+                return false;
+            }
+        } else{
+            return false;
+        }
+    }
 }

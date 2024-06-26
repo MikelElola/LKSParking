@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +55,6 @@ public class ReservationTimeFragment extends Fragment {
         // Usar los datos como sea necesario
         Log.i("ReservationTimeFragment", "Selected Date: " + selectedDate);
         if (plaza != null) {
-            Log.i("ReservationTimeFragment", "Plaza ID: " + plaza.getId());
             Log.i("ReservationTimeFragment", "Plaza Tipo: " + plaza.getTipo());
             Log.i("ReservationTimeFragment", "Plaza Pos: " + plaza.getPos());
         }
@@ -65,6 +66,8 @@ public class ReservationTimeFragment extends Fragment {
 
         Button reservarButton = view.findViewById(R.id.reservarButton);
         reservarButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+
             // Obtener las horas de inicio y fin seleccionadas
             long startHour = reservationViewModel.getSelectedStartTime().getValue();
             long endHour = reservationViewModel.getSelectedEndTime().getValue();
@@ -75,6 +78,7 @@ public class ReservationTimeFragment extends Fragment {
 
             // Llamar al método addReserva del ViewModel
             reservationViewModel.addReserva(selectedDate, plaza, hora);
+            navController.navigate(R.id.newReservationFragment);
         });
        return view;
     }

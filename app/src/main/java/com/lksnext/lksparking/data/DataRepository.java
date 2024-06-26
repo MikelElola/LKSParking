@@ -71,21 +71,51 @@ public class DataRepository {
                 });
     }
 
+    public void initiatePasswordReset(String email, Callback callback) {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess();
+                    } else {
+                        callback.onFailure();
+                    }
+                });
+    }
+
     // Añadir reserva
     public void addReserva(Reserva reserva, Callback callback) {
-        db.collection("reservas").add(reserva)
-                .addOnSuccessListener(documentReference -> {
-                    String generatedId = documentReference.getId();
-                    reserva.setId(generatedId);
-                    documentReference.update("id", generatedId) // Actualiza el campo id en Firestore
-                            .addOnSuccessListener(aVoid -> {
-                                Log.i("MiApp", "ID de la reserva: " + reserva.getId());
-                                callback.onSuccess();
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("MiApp", "Error al actualizar el ID de la reserva", e);
-                                callback.onFailure();
-                            });
+        // Verifica si ya existe una reserva en la misma fecha y plaza
+        db.collection("reservas")
+                .whereEqualTo("fecha", reserva.getFecha())
+                .whereEqualTo("plaza.pos", reserva.getPlaza().getPos())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            // Ya existe una reserva en la misma fecha y plaza
+                            Log.e("MiApp", "Ya existe una reserva en la misma fecha y plaza");
+                            callback.onFailure();
+                        } else {
+                            // No existe una reserva conflictiva, añade la nueva reserva
+                            db.collection("reservas").add(reserva)
+                                    .addOnSuccessListener(documentReference -> {
+                                        String generatedId = documentReference.getId();
+                                        reserva.setId(generatedId);
+                                        documentReference.update("id", generatedId) // Actualiza el campo id en Firestore
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Log.i("MiApp", "ID de la reserva: " + reserva.getId());
+                                                    callback.onSuccess();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Log.e("MiApp", "Error al actualizar el ID de la reserva", e);
+                                                    callback.onFailure();
+                                                });
+                                    });
+                        }
+                    } else {
+                        Log.e("MiApp", "Error al verificar reservas existentes", task.getException());
+                        callback.onFailure();
+                    }
                 });
     }
 
@@ -150,7 +180,7 @@ public class DataRepository {
                 });
     }
 
-    public void getReservasPorFecha(String fecha, ReservasCallback<List<Reserva>> callback) {
+    /*public void getReservasPorFecha(String fecha, ReservasCallback<List<Reserva>> callback) {
         List<Reserva> reservas = new ArrayList<>();
         db.collection("reservas").get()
                 .addOnCompleteListener(task -> {
@@ -172,7 +202,45 @@ public class DataRepository {
                         callback.onFailure();
                     }
                 });
+    }*/
+    public void getReservasPorFecha(String fecha, long tiempoActual, ReservasCallback<List<Reserva>> callback) {
+        List<Reserva> reservas = new ArrayList<>();
+        db.collection("reservas").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Reserva reserva = document.toObject(Reserva.class);
+                            reserva.setId(document.getId());
+
+                            String fechaReserva = reserva.getFecha().replace("-", "/");
+                            long horaFin = reserva.getHora().getHoraFin();
+
+                            // Convertir la fecha de la reserva a milisegundos
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            try {
+                                Date fechaReservaDate = dateFormat.parse(fechaReserva);
+                                Calendar calReserva = Calendar.getInstance();
+                                calReserva.setTime(fechaReservaDate);
+                                calReserva.add(Calendar.MINUTE, (int) horaFin);
+
+                                long tiempoReservaFin = calReserva.getTimeInMillis();
+
+                                // Filtrar por fecha y que la horaFin no haya pasado
+                                if (fechaReserva.equals(fecha) && tiempoReservaFin > tiempoActual) {
+                                    reservas.add(reserva);
+                                    Log.i("MiApp", "Reserva en la fecha seleccionada y vigente: " + fecha + " - " + reserva.toString());
+                                }
+                            } catch (ParseException e) {
+                                Log.e("MiApp", "Error al parsear la fecha de la reserva", e);
+                            }
+                        }
+                        callback.onSuccess(reservas);
+                    } else {
+                        callback.onFailure();
+                    }
+                });
     }
+
 
     public void getReservasVigentes(long tiempoActual,String usuario, ReservasCallback<List<Reserva>> callback){
         List<Reserva> reservasVigentes = new ArrayList<>();

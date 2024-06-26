@@ -10,7 +10,6 @@ import com.lksnext.lksparking.data.TipoVehiculo;
 
 public class Plaza implements Parcelable {
 
-    long id;
     TipoVehiculo tipo;
 
     int pos;
@@ -19,13 +18,11 @@ public class Plaza implements Parcelable {
 
     }
 
-    public Plaza(long id, TipoVehiculo tipo, int pos) {
-        this.id = id;
+    public Plaza(TipoVehiculo tipo, int pos) {
         this.tipo = tipo;
         this.pos = pos;
     }
     protected Plaza(Parcel in) {
-        id = in.readLong();
         tipo = TipoVehiculo.valueOf(in.readString());
         pos = in.readInt();
     }
@@ -37,14 +34,6 @@ public class Plaza implements Parcelable {
     @PropertyName("tipo")
     public void setTipo(String tipo) {
         this.tipo = TipoVehiculo.fromString(tipo);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public int getPos() {
@@ -73,7 +62,6 @@ public class Plaza implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeLong(id);
         dest.writeString(tipo.name());
         dest.writeInt(pos);
     }

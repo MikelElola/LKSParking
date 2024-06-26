@@ -97,8 +97,10 @@ public class ReservationViewModel extends ViewModel {
 
     public void getReservasDia() {
         String fecha = selectedDate.getValue();
+        Calendar calendar = Calendar.getInstance();
+        long tiempoActual = calendar.getTimeInMillis();
         if (fecha != null) {
-            DataRepository.getInstance().getReservasPorFecha(fecha, new DataRepository.ReservasCallback<List<Reserva>>() {
+            DataRepository.getInstance().getReservasPorFecha(fecha, tiempoActual, new DataRepository.ReservasCallback<List<Reserva>>() {
                 @Override
                 public void onSuccess(List<Reserva> reservasList) {
                     reservas.setValue(reservasList);
@@ -120,7 +122,7 @@ public class ReservationViewModel extends ViewModel {
         String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
         // Aquí puedes crear un objeto Reserva con datos de ejemplo
         String fecha = "2024-06-10";
-        Plaza plaza = new Plaza(5, TipoVehiculo.ELECTRICO, 5);
+        Plaza plaza = new Plaza(TipoVehiculo.ELECTRICO, 5);
         Hora hora = new Hora(1200, 1545);
 
         // Crear objeto Reserva con los datos
@@ -140,7 +142,7 @@ public class ReservationViewModel extends ViewModel {
 
             @Override
             public void onFailure() {
-                Log.e("MiApp", "Todo mal");
+                Log.e("MiApp", "Error al añadir la reserva");
             }
         });
     }
