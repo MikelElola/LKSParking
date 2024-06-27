@@ -63,7 +63,7 @@ public class VigentesFragment extends Fragment {
 
                 // Iterar sobre cada reserva y agregarla como una vista
                 for (Reserva reserva : reservas) {
-                    addItem(binding, inflater, reserva);
+                    vigentesViewModel.addItem(binding, inflater, reserva, requireContext());
                 }
             }
         });
@@ -72,7 +72,7 @@ public class VigentesFragment extends Fragment {
 
     }
 
-    public void addItem(FragmentVigentesBinding binding, LayoutInflater inflater, Reserva reserva){
+    /*public void addItem(FragmentVigentesBinding binding, LayoutInflater inflater, Reserva reserva){
         Context context = requireContext();
 
         LinearLayout reservasContainer = binding.reservasContainer;
@@ -123,8 +123,6 @@ public class VigentesFragment extends Fragment {
                             // Mostrar un mensaje de error al usuario si el formato no es válido
                             Toast.makeText(context, "Formato de hora no válido.", Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "Debe ser HH:mm-HH:mm, y la hora final debe ser posterior a la inicial.", Toast.LENGTH_SHORT).show();
-
-
                         }
                     })
                     .setNegativeButton("Cancelar", null)
@@ -145,5 +143,5 @@ public class VigentesFragment extends Fragment {
 
 
         reservasContainer.addView(reservaView);
-    }
+    }*/
 }

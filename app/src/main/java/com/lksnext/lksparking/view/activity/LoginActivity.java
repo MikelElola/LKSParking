@@ -2,6 +2,8 @@ package com.lksnext.lksparking.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.widget.Toast;
 
@@ -28,11 +30,36 @@ public class LoginActivity extends AppCompatActivity {
         //Asignamos el viewModel de login
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
+        //Quitar el estado de error al cambiar el texto
+        binding.emailText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.email.setError(null); // Quitar el mensaje de error
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        binding.passwordText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.password.setError(null); // Quitar el mensaje de error
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         //Acciones a realizar cuando el usuario clica el boton de login
         binding.loginButton.setOnClickListener(v -> {
             String email = binding.emailText.getText().toString();
             String password = binding.passwordText.getText().toString();
-            if (!email.isEmpty()) {
+            if (!(email.isEmpty()||password.isEmpty())) {
                 // Verificar además si el formato del email es válido
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     // Iniciar el proceso de recuperación de contraseña
@@ -42,8 +69,9 @@ public class LoginActivity extends AppCompatActivity {
                     binding.email.setError("Por favor ingresa un email válido");
                 }
             } else {
-                // Mostrar un mensaje de error si el campo de email está vacío
+                // Mostrar un mensaje de error si el campo de email o contraseña están vacíos
                 binding.email.setError("Por favor proporciona un email");
+                binding.password.setError("Por favor proporciona una contraseña");
             }
 
         });

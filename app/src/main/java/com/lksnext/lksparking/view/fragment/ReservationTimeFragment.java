@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lksnext.lksparking.R;
@@ -72,13 +73,21 @@ public class ReservationTimeFragment extends Fragment {
             long startHour = reservationViewModel.getSelectedStartTime().getValue();
             long endHour = reservationViewModel.getSelectedEndTime().getValue();
 
-            Hora hora = new Hora(startHour, endHour);
-            Log.i("MiApp","Hora de inicio: "+ startHour);
-            Log.i("MiApp","Hora final: "+ endHour);
+            // Validar las horas seleccionadas
+            ReservationViewModel.ReservaValidationResult validationResult = reservationViewModel.isTimeAvailable(startHour, endHour);
+            if (!validationResult.isValid()) {
+                // Mostrar mensaje de error según la validación
+                Toast.makeText(requireContext(), validationResult.getMessage(), Toast.LENGTH_SHORT).show();
+                return; // Salir del método sin realizar la reserva
+            } else {
+                Hora hora = new Hora(startHour, endHour);
+                Log.i("MiApp","Hora de inicio: "+ startHour);
+                Log.i("MiApp","Hora final: "+ endHour);
 
-            // Llamar al método addReserva del ViewModel
-            reservationViewModel.addReserva(selectedDate, plaza, hora);
-            navController.navigate(R.id.newReservationFragment);
+                // Llamar al método addReserva del ViewModel
+                reservationViewModel.addReserva(selectedDate, plaza, hora);
+                navController.navigate(R.id.newReservationFragment);
+            }
         });
        return view;
     }

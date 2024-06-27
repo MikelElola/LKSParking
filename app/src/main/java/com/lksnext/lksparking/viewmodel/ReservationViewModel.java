@@ -1,29 +1,42 @@
 package com.lksnext.lksparking.viewmodel;
 
-import android.util.Log;
+import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageButton;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.lksnext.lksparking.R;
 import com.lksnext.lksparking.data.DataRepository;
 import com.lksnext.lksparking.data.TipoVehiculo;
+import com.lksnext.lksparking.databinding.FragmentNewReservationBinding;
 import com.lksnext.lksparking.domain.Callback;
 import com.lksnext.lksparking.domain.Hora;
 import com.lksnext.lksparking.domain.Plaza;
 import com.lksnext.lksparking.domain.Reserva;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ReservationViewModel extends ViewModel {
 
@@ -115,20 +128,6 @@ public class ReservationViewModel extends ViewModel {
         }
     }
 
-    //PARA PROBAR
-    public Reserva crearReservaEjemplo() {
-        // Obtener usuario autenticado
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
-        // Aquí puedes crear un objeto Reserva con datos de ejemplo
-        String fecha = "2024-06-10";
-        Plaza plaza = new Plaza(TipoVehiculo.ELECTRICO, 5);
-        Hora hora = new Hora(1200, 1545);
-
-        // Crear objeto Reserva con los datos
-        return new Reserva(fecha, usuario, plaza, hora);
-    }
-
     public void addReserva(String selectedDate, Plaza plaza, Hora hora) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
@@ -147,6 +146,142 @@ public class ReservationViewModel extends ViewModel {
         });
     }
 
+    public void crearPlano(FragmentNewReservationBinding binding, List<Reserva> reservas, Context context) {
+        Map<Integer, Button> botones = new HashMap<>();
+        Map<Integer, ImageButton> imageButtons = new HashMap<>();
 
+        Button[] botonesArray = {
+                binding.pos1, binding.pos2, binding.pos3, binding.pos4, binding.pos5,
+                binding.pos6, binding.pos7, binding.pos8, binding.pos9, binding.pos10,
+                binding.pos11
+        };
+        for (int i = 0; i < botonesArray.length; i++) {
+            botones.put(i + 1, botonesArray[i]);// Coloca en el HashMap, la posición comienza desde 1
+            Button buttonInicial = botones.get(i+1);
+            buttonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.free_parkingslot)));
+            int finalI = i+1;
+            buttonInicial.setOnClickListener(v -> {
+                setSelectedPos(finalI);
+                setSelectedType(TipoVehiculo.NORMAL);
+            });
+        }
+        ImageButton[] imageButtonsArray = {
+                binding.pos12, binding.pos13, binding.pos14, binding.pos15, binding.pos16,
+                binding.pos17, binding.pos18, binding.pos19
+        };
+        for (int i = 0; i < imageButtonsArray.length; i++) {
+            imageButtons.put(12 + i , imageButtonsArray[i]);  // Coloca en el HashMap, la posición comienza desde 12
+            ImageButton iButtonInicial = imageButtons.get(12+i);
+            iButtonInicial.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.free_parkingslot)));
+            int finalI = i + 12;
+            if (finalI<=14){
+                //Si se ha elegido una plaza para minusválidos
+                iButtonInicial.setOnClickListener(v -> {
+                    setSelectedPos(finalI);
+                    setSelectedType(TipoVehiculo.MINUSVALIDO);
+                });
+            } else if (finalI<=16){
+                //Si se ha elegido una plaza para motos
+                iButtonInicial.setOnClickListener(v -> {
+                    setSelectedPos(finalI);
+                    setSelectedType(TipoVehiculo.MOTO);
+                });
+            } else{
+                //Si se ha elegido una plaza para coches eléctricos
+                iButtonInicial.setOnClickListener(v -> {
+                    setSelectedPos(finalI);
+                    setSelectedType(TipoVehiculo.ELECTRICO);
+                });
+            }
+        }
+        // Iterar sobre las reservas y actualizar los colores de fondo
+        for (Reserva reserva : reservas) {
+            int pos = reserva.getPlaza().getPos(); // Obtener la posición de la reserva
+            // Verificar si la posición está en el HashMap de botones
+            if (botones.containsKey(pos)) {
+                Log.i("MiApp", "Reserva añadida en la plaza normal " + pos);
+                Button button = botones.get(pos);
+                button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.occupied_parkingslot)));
+            }
+            // Verificar si la posición está en el HashMap de imageButtons
+            if (imageButtons.containsKey(pos)) {
+                Log.i("MiApp", "Reserva añadida en la plaza imagen " + pos);
+                ImageButton imageButton = imageButtons.get(pos);
+                imageButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.occupied_parkingslot)));
+            }
+        }
+    }
 
+    public class ReservaValidationResult {
+        private boolean isValid;
+        private String message;
+
+        public ReservaValidationResult(boolean isValid, String message) {
+            this.isValid = isValid;
+            this.message = message;
+        }
+
+        public boolean isValid() {
+            return isValid;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+    public ReservaValidationResult isReservaAvailable (String date, int pos){
+        // Parsear la fecha seleccionada
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Log.i("MiApp", "Fecha seleccionada: " + date);
+            Date formatedDate = dateFormat.parse(date);
+            Log.i("MiApp", "Fecha seleccionada parseada: " + formatedDate);
+
+            // Obtener la fecha actual y calcular la fecha límite (hoy + 7 días)
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0); // Ajustar la hora a 00:00:00
+
+            Date today = calendar.getTime();
+            Log.i("MiApp", "Fecha de hoy: " + today);
+
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            Date maxDate = calendar.getTime();
+            Log.i("MiApp", "Fecha dentro de 7 das: " + maxDate);
+            // Verificar si la fecha seleccionada está dentro del rango permitido
+            if (formatedDate.before(today) || formatedDate.after(maxDate)) {
+                return new ReservaValidationResult(false, "La fecha seleccionada debe estar dentro de los próximos 7 días.");
+            }
+
+            // Verificar si la plaza ya está reservada para la fecha seleccionada
+            for (Reserva reserva : reservas.getValue()) {
+                if (reserva.getFecha().equals(date) && reserva.getPlaza().getPos() == pos) {
+                    return new ReservaValidationResult(false, "La plaza seleccionada ya está reservada.");
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ReservaValidationResult(false, "Error al analizar la fecha seleccionada.");
+        }
+        return new ReservaValidationResult(true, "Reserva disponible.");
+    }
+    public ReservaValidationResult isTimeAvailable(long startHour, long endHour) {
+        // Verificar si endHour es anterior o igual a startHour
+        Log.i("MiApp", "Hora de inicio: "+ startHour);
+        Log.i("MiApp", "Hora de fin: "+ endHour);
+        if (endHour <= startHour) {
+            return new ReservaValidationResult(false, "La hora final debe ser posterior a la hora de inicio.");
+        }
+
+        // Calcular la diferencia en minutos
+        long differenceInMinutes = (endHour - startHour) % (24 * 60);
+        // Verificar si la diferencia es mayor a 9 horas (540 minutos)
+        if (differenceInMinutes > 540) {
+            return new ReservaValidationResult(false, "El tiempo máximo permitido es de 9 horas.");
+        }
+
+        return new ReservaValidationResult(true, "Horario disponible.");
+    }
 }
