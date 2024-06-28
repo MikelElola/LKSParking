@@ -85,8 +85,8 @@ public class ReservationTimeFragment extends Fragment {
                 Log.i("MiApp","Hora final: "+ endHour);
 
                 // Llamar al método addReserva del ViewModel
-                reservationViewModel.addReserva(selectedDate, plaza, hora);
-                navController.navigate(R.id.newReservationFragment);
+                reservationViewModel.addReserva(selectedDate, plaza, hora, requireContext());
+                navController.navigate(R.id.vigentesFragment);
             }
         });
        return view;

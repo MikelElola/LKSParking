@@ -180,6 +180,7 @@ public class VigentesViewModel extends ViewModel {
                 .setPositiveButton("Aceptar", (dialog, which) -> {
                     // Lógica para cancelar la reserva
                     cancelReserva(reserva.getId());
+                    reservasContainer.removeView(reservaView);
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                     // No se hace nada al cancelar

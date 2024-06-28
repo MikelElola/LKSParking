@@ -2,7 +2,10 @@ package com.lksnext.lksparking.viewmodel;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.util.Log;
 import android.widget.Button;
@@ -28,6 +31,7 @@ import com.lksnext.lksparking.domain.Callback;
 import com.lksnext.lksparking.domain.Hora;
 import com.lksnext.lksparking.domain.Plaza;
 import com.lksnext.lksparking.domain.Reserva;
+import com.lksnext.lksparking.notification.NotificationReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -128,7 +132,7 @@ public class ReservationViewModel extends ViewModel {
         }
     }
 
-    public void addReserva(String selectedDate, Plaza plaza, Hora hora) {
+    public void addReserva(String selectedDate, Plaza plaza, Hora hora, Context context) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";
 
@@ -137,6 +141,38 @@ public class ReservationViewModel extends ViewModel {
             @Override
             public void onSuccess() {
                 Log.i("MiApp", "Reserva añadida correctamente");
+                // Calcular el tiempo de inicio y fin en milisegundos
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    Date date = dateFormat.parse(selectedDate);
+
+                    if (date != null) {
+                        Calendar calendarInicio = Calendar.getInstance();
+                        calendarInicio.setTime(date);
+                        calendarInicio.set(Calendar.HOUR_OF_DAY, (int) hora.getHoraInicio() / 60);
+                        calendarInicio.set(Calendar.MINUTE, (int) hora.getHoraInicio() % 60);
+                        calendarInicio.set(Calendar.SECOND, 0);
+
+                        Calendar calendarFin = Calendar.getInstance();
+                        calendarFin.setTime(date);
+                        calendarFin.set(Calendar.HOUR_OF_DAY, (int) hora.getHoraFin() / 60);
+                        calendarFin.set(Calendar.MINUTE, (int) hora.getHoraFin() % 60);
+                        calendarFin.set(Calendar.SECOND, 0);
+
+                        long startHourInMillis = calendarInicio.getTimeInMillis();
+                        long endHourInMillis = calendarFin.getTimeInMillis();
+
+                        // Programar la notificación 30 minutos antes de la hora de inicio
+                        long triggerTimeInicio = startHourInMillis - 30 * 60 * 1000;
+                        scheduleReservationNotification(context, reserva.getId() + "_inicio", triggerTimeInicio, "Quedan 30 minutos para que comience tu reserva");
+
+                        // Programar la notificación 15 minutos antes de la hora de fin
+                        long triggerTimeFin = endHourInMillis - 15 * 60 * 1000;
+                        scheduleReservationNotification(context, reserva.getId() + "_fin", triggerTimeFin, "Quedan 15 minutos para que finalice tu reserva");
+                    }
+                } catch (ParseException e) {
+                    Log.e("MiApp", "Error al analizar la fecha seleccionada", e);
+                }
             }
 
             @Override
@@ -144,6 +180,19 @@ public class ReservationViewModel extends ViewModel {
                 Log.e("MiApp", "Error al añadir la reserva");
             }
         });
+    }
+    public void scheduleReservationNotification(Context context, String reservationID, long triggerTime, String message) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra("reservation_id", reservationID);
+        intent.putExtra("message", message);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        Log.i("MiApp", "Notificación programada con éxito");
+
     }
 
     public void crearPlano(FragmentNewReservationBinding binding, List<Reserva> reservas, Context context) {

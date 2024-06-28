@@ -180,29 +180,6 @@ public class DataRepository {
                 });
     }
 
-    /*public void getReservasPorFecha(String fecha, ReservasCallback<List<Reserva>> callback) {
-        List<Reserva> reservas = new ArrayList<>();
-        db.collection("reservas").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Reserva reserva = document.toObject(Reserva.class);
-                            reserva.setId(document.getId());
-
-                            String fechaReserva = reserva.getFecha().replace("-", "/");
-
-                            // Filtrar por fecha
-                            if (fechaReserva.equals(fecha)) {
-                                reservas.add(reserva);
-                                Log.i("MiApp", "Reserva en la fecha seleccionada: " + fecha + " - " + reserva.toString());
-                            }
-                        }
-                        callback.onSuccess(reservas);
-                    } else {
-                        callback.onFailure();
-                    }
-                });
-    }*/
     public void getReservasPorFecha(String fecha, long tiempoActual, ReservasCallback<List<Reserva>> callback) {
         List<Reserva> reservas = new ArrayList<>();
         db.collection("reservas").get()
