@@ -2,6 +2,7 @@ package com.lksnext.lksparking.viewmodel;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,6 +163,27 @@ public class VigentesViewModel extends ViewModel {
                         if (isValidTime(editedTime)) {
                             // Actualizar el texto de la hora en el TextView
                             timeTextView.setText(editedTime);
+                            String[] partes = editedTime.split("-");
+                            String horaInicio = partes[0];
+                            String horaFin = partes[1];
+
+                            long horaInicioMinutos = convertirHoraAMinutos(horaInicio);
+                            long horaFinMinutos = convertirHoraAMinutos(horaFin);
+
+                            // Asignamos los valores a la reserva
+                            reserva.getHora().setHoraInicio(horaInicioMinutos);
+                            reserva.getHora().setHoraFin(horaFinMinutos);
+                            DataRepository.getInstance().updateReserva(reserva, new DataRepository.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("MiApp", "Reserva actualizada correctamente");
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Log.e("MiApp", "Error al actualizar la hora de la reserva");
+                                }
+                            });
                             // Aquí puedes guardar el cambio si es necesario
                         } else {
                             // Mostrar un mensaje de error al usuario si el formato no es válido
@@ -188,5 +210,12 @@ public class VigentesViewModel extends ViewModel {
                 .show());
 
         reservasContainer.addView(reservaView);
+    }
+
+    private long convertirHoraAMinutos(String hora) {
+        String[] partesHora = hora.split(":");
+        int horas = Integer.parseInt(partesHora[0]);
+        int minutos = Integer.parseInt(partesHora[1]);
+        return horas * 60 + minutos;
     }
 }
