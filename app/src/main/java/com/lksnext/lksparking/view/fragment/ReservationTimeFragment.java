@@ -19,6 +19,7 @@ import com.lksnext.lksparking.R;
 import com.lksnext.lksparking.data.TipoVehiculo;
 import com.lksnext.lksparking.domain.Hora;
 import com.lksnext.lksparking.domain.Plaza;
+import com.lksnext.lksparking.domain.Reserva;
 import com.lksnext.lksparking.viewmodel.ReservationViewModel;
 
 /**
@@ -53,11 +54,12 @@ public class ReservationTimeFragment extends Fragment {
         String selectedDate = getArguments().getString("selectedDate");
         Plaza plaza = getArguments().getParcelable("plaza");
 
+        String tag = "ReservationTimeFragment";
         // Usar los datos como sea necesario
-        Log.i("ReservationTimeFragment", "Selected Date: " + selectedDate);
+        Log.i(tag, "Selected Date: " + selectedDate);
         if (plaza != null) {
-            Log.i("ReservationTimeFragment", "Plaza Tipo: " + plaza.getTipo());
-            Log.i("ReservationTimeFragment", "Plaza Pos: " + plaza.getPos());
+            Log.i(tag, "Plaza Tipo: " + plaza.getTipo());
+            Log.i(tag, "Plaza Pos: " + plaza.getPos());
         }
 
 
@@ -85,8 +87,12 @@ public class ReservationTimeFragment extends Fragment {
                 Log.i("MiApp","Hora final: "+ endHour);
 
                 // Llamar al método addReserva del ViewModel
-                reservationViewModel.addReserva(selectedDate, plaza, hora, requireContext());
-                navController.navigate(R.id.vigentesFragment);
+                Reserva nuevaReserva = reservationViewModel.addReserva(selectedDate, plaza, hora, requireContext());
+                //Crear el bundle
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("reserva", nuevaReserva);
+                navController.navigate(R.id.vigentesFragment, bundle);
+
             }
         });
        return view;

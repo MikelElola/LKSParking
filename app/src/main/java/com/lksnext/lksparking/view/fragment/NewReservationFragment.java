@@ -124,23 +124,11 @@ public class NewReservationFragment extends Fragment {
         //Obtener las reservas al cargar la página
         reservationViewModel.getReservasDia();
 
-        reservationViewModel.getReservas().observe(getViewLifecycleOwner(), reservas -> {
+        reservationViewModel.getReservas().observe(getViewLifecycleOwner(), reservas ->
             // Llamar a la función crearPlano para actualizar los botones según las reservas
-            reservationViewModel.crearPlano(binding,reservas,requireContext());
-        });
+            reservationViewModel.crearPlano(binding,reservas,requireContext())
+        );
 
-        /**
-         *
-         * EJEMPLO DE CAMBIAR UN TEXTO CON LA INFORMACION DE LA BD
-        TextView dbText= binding.databaseText;
-        Button dbButton = binding.databasebutton;
-        dbButton.setOnClickListener(v -> reservationViewModel.addReserva());
-        reservationViewModel.getReservaData().observe(getViewLifecycleOwner(), reservaData -> {
-            // Actualizar la interfaz de usuario con el nuevo valor de reservaData
-            // Por ejemplo, mostrarlo en un TextView
-            dbText.setText(reservaData);
-        });
-        */
         return binding.getRoot();
     }
 
