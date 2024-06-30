@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.lksnext.lksparking.databinding.ActivityRegisterBinding;
 import com.lksnext.lksparking.viewmodel.RegisterViewModel;
 
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
-    private RegisterViewModel registerViewModel;
+    public static final String ERROR_EMAILPASS = "Email o contraseña incorrectos";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +26,13 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //Asignamos el viewModel de register
-        registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        RegisterViewModel registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
 
         //Quitar el estado de error al cambiar el texto
         binding.emailText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //No hace nada antes
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -39,11 +40,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
+                //No hace nada después
             }
         });
         binding.passwordText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //No hace nada antes
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -51,11 +54,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
+                //No hace nada después
             }
         });
         binding.passwordText2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //No hace nada antes
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -63,29 +68,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
+                //No hace nada después
             }
         });
         binding.registerButton.setOnClickListener(v -> {
-            String email = binding.emailText.getText().toString();
-            String password = binding.passwordText.getText().toString();
-            String password2 = binding.passwordText2.getText().toString();
-            if (!email.isEmpty()) {
-                // Verificar además si el formato del email es válido
-                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    if(password.equals(password2)){
-                        registerViewModel.registerUser(email, password);
-                    } else{
-                        binding.password.setError("Las dos contraseñas deben ser iguales");
-                        binding.password2.setError("Las dos contraseñas deben ser iguales");
-                    }
-                } else {
-                    // Mostrar un mensaje de error si el formato del email no es válido
-                    binding.email.setError("Por favor ingresa un email válido");
-                }
-            } else {
-                // Mostrar un mensaje de error si el campo de email está vacío
-                binding.email.setError("Por favor proporciona un email");
-            }
+            String email = Objects.requireNonNull(binding.emailText.getText()).toString();
+            String password = Objects.requireNonNull(binding.passwordText.getText()).toString();
+            String password2 = Objects.requireNonNull(binding.passwordText2.getText()).toString();
+            registerViewModel.comprobarRegister(binding,email,password,password2);
         });
 
         //Observamos la variable logged, la cual nos informara cuando el usuario intente hacer login y se
@@ -98,9 +88,9 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     //Login incorrecto
-                    binding.email.setError("Email o contraseña incorrectos");
-                    binding.password.setError("Email o contraseña incorrectos");
-                    binding.password2.setError("Email o contraseña incorrectos");
+                    binding.email.setError(ERROR_EMAILPASS);
+                    binding.password.setError(ERROR_EMAILPASS);
+                    binding.password2.setError(ERROR_EMAILPASS);
                 }
             }
         });

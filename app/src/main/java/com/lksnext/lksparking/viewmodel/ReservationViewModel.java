@@ -45,13 +45,13 @@ public class ReservationViewModel extends ViewModel {
 
 
     public static final String MI_APP = "MiApp";
-    private MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
-    private MutableLiveData<String> selectedDate = new MutableLiveData<>();
-    private MutableLiveData<Integer> selectedPos = new MutableLiveData<>();
-    private MutableLiveData<TipoVehiculo> selectedType = new MutableLiveData<>();
-    private MutableLiveData<Long> selectedStartTime = new MutableLiveData<>();
-    private MutableLiveData<Long> selectedEndTime = new MutableLiveData<>();
-    private FirebaseAuth firebaseAuth;
+    private final MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
+    private final MutableLiveData<String> selectedDate = new MutableLiveData<>();
+    private final MutableLiveData<Integer> selectedPos = new MutableLiveData<>();
+    private final MutableLiveData<TipoVehiculo> selectedType = new MutableLiveData<>();
+    private final MutableLiveData<Long> selectedStartTime = new MutableLiveData<>();
+    private final MutableLiveData<Long> selectedEndTime = new MutableLiveData<>();
+    private final FirebaseAuth firebaseAuth;
 
     public LiveData<List<Reserva>> getReservas() { return reservas; }
     public LiveData<String> getSelectedDate() {
@@ -141,7 +141,7 @@ public class ReservationViewModel extends ViewModel {
         DataRepository.getInstance().addReserva(reserva, new DataRepository.Callback() {
             @Override
             public void onSuccess() {
-                Log.i("MI_APP", "Reserva añadida correctamente");
+                Log.i(MI_APP, "Reserva añadida correctamente");
                 // Calcular el tiempo de inicio y fin en milisegundos
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -172,13 +172,13 @@ public class ReservationViewModel extends ViewModel {
                         scheduleReservationNotification(context, reserva.getId() + "_fin", triggerTimeFin, "Quedan 15 minutos para que finalice tu reserva");
                     }
                 } catch (ParseException e) {
-                    Log.e("MI_APP", "Error al analizar la fecha seleccionada", e);
+                    Log.e(MI_APP, "Error al analizar la fecha seleccionada", e);
                 }
             }
 
             @Override
             public void onFailure() {
-                Log.e("MI_APP", "Error al añadir la reserva");
+                Log.e(MI_APP, "Error al añadir la reserva");
             }
         });
         return reserva;
@@ -193,7 +193,7 @@ public class ReservationViewModel extends ViewModel {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
-        Log.i("MI_APP", "Notificación programada con éxito");
+        Log.i(MI_APP, "Notificación programada con éxito");
 
     }
 
@@ -252,14 +252,14 @@ public class ReservationViewModel extends ViewModel {
             int pos = reserva.getPlaza().getPos(); // Obtener la posición de la reserva
             // Verificar si la posición está en el HashMap de botones
             if (botones.containsKey(pos)) {
-                Log.i("MI_APP", "Reserva añadida en la plaza normal " + pos);
+                Log.i(MI_APP, "Reserva añadida en la plaza normal " + pos);
                 Button button = botones.get(pos);
                 assert button != null;
                 button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.occupied_parkingslot)));
             }
             // Verificar si la posición está en el HashMap de imageButtons
             if (imageButtons.containsKey(pos)) {
-                Log.i("MI_APP", "Reserva añadida en la plaza imagen " + pos);
+                Log.i(MI_APP, "Reserva añadida en la plaza imagen " + pos);
                 ImageButton imageButton = imageButtons.get(pos);
                 assert imageButton != null;
                 imageButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.occupied_parkingslot)));
@@ -267,9 +267,9 @@ public class ReservationViewModel extends ViewModel {
         }
     }
 
-    public class ReservaValidationResult {
-        private boolean isValid;
-        private String message;
+    public static class ReservaValidationResult {
+        private final boolean isValid;
+        private final String message;
 
         public ReservaValidationResult(boolean isValid, String message) {
             this.isValid = isValid;
@@ -288,9 +288,9 @@ public class ReservationViewModel extends ViewModel {
         // Parsear la fecha seleccionada
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
-            Log.i("MI_APP", "Fecha seleccionada: " + date);
+            Log.i(MI_APP, "Fecha seleccionada: " + date);
             Date formatedDate = dateFormat.parse(date);
-            Log.i("MI_APP", "Fecha seleccionada parseada: " + formatedDate);
+            Log.i(MI_APP, "Fecha seleccionada parseada: " + formatedDate);
 
             // Obtener la fecha actual y calcular la fecha límite (hoy + 7 días)
             Calendar calendar = Calendar.getInstance();
@@ -300,11 +300,11 @@ public class ReservationViewModel extends ViewModel {
             calendar.set(Calendar.MILLISECOND, 0); // Ajustar la hora a 00:00:00
 
             Date today = calendar.getTime();
-            Log.i("MI_APP", "Fecha de hoy: " + today);
+            Log.i(MI_APP, "Fecha de hoy: " + today);
 
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             Date maxDate = calendar.getTime();
-            Log.i("MI_APP", "Fecha dentro de 7 das: " + maxDate);
+            Log.i(MI_APP, "Fecha dentro de 7 das: " + maxDate);
             // Verificar si la fecha seleccionada está dentro del rango permitido
             assert formatedDate != null;
             if (formatedDate.before(today) || formatedDate.after(maxDate)) {
@@ -323,9 +323,6 @@ public class ReservationViewModel extends ViewModel {
         return new ReservaValidationResult(true, "Reserva disponible.");
     }
     public ReservaValidationResult isTimeAvailable(long startHour, long endHour) {
-        // Verificar si endHour es anterior o igual a startHour
-        Log.i("MI_APP", "Hora de inicio: "+ startHour);
-        Log.i("MI_APP", "Hora de fin: "+ endHour);
         if (endHour <= startHour) {
             return new ReservaValidationResult(false, "La hora final debe ser posterior a la hora de inicio.");
         }

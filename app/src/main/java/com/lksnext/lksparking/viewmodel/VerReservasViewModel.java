@@ -1,7 +1,5 @@
 package com.lksnext.lksparking.viewmodel;
 
-import android.app.AlertDialog;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -11,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lksnext.lksparking.data.DataRepository;
-import com.lksnext.lksparking.domain.Callback;
 import com.lksnext.lksparking.domain.Reserva;
 
 import java.util.Calendar;
@@ -21,12 +18,11 @@ public class VerReservasViewModel extends ViewModel {
     private final MutableLiveData<String> mesActual = new MutableLiveData<>();
     private final MutableLiveData<Integer> yearActual = new MutableLiveData<>();
     private final MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
-    private FirebaseAuth firebaseAuth;
+    private final FirebaseAuth firebaseAuth;
 
     public LiveData<String> getMesActual() {
         return mesActual;
     }
-    public LiveData<Integer> getYearActual(){return yearActual;}
     public LiveData<List<Reserva>> getReservas() {return reservas;}
 
     public VerReservasViewModel(){
@@ -45,6 +41,7 @@ public class VerReservasViewModel extends ViewModel {
     public void getReservasMes(){
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH)+1;
+        assert yearActual.getValue() != null;
         int year = yearActual.getValue();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String usuario = (currentUser != null) ? currentUser.getEmail() : "usuarioDesconocido";

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lksnext.lksparking.R;
-import com.lksnext.lksparking.data.TipoVehiculo;
 import com.lksnext.lksparking.domain.Hora;
 import com.lksnext.lksparking.domain.Plaza;
 import com.lksnext.lksparking.domain.Reserva;
@@ -51,6 +50,7 @@ public class ReservationTimeFragment extends Fragment {
        TextInputEditText endTimeText = view.findViewById(R.id.end_time_input_edit_text);
 
         // Obtener los argumentos
+        assert getArguments() != null;
         String selectedDate = getArguments().getString("selectedDate");
         Plaza plaza = getArguments().getParcelable("plaza");
 
@@ -72,7 +72,9 @@ public class ReservationTimeFragment extends Fragment {
             NavController navController = Navigation.findNavController(v);
 
             // Obtener las horas de inicio y fin seleccionadas
+            assert reservationViewModel.getSelectedStartTime().getValue() != null;
             long startHour = reservationViewModel.getSelectedStartTime().getValue();
+            assert reservationViewModel.getSelectedEndTime().getValue() != null;
             long endHour = reservationViewModel.getSelectedEndTime().getValue();
 
             // Validar las horas seleccionadas
@@ -80,7 +82,6 @@ public class ReservationTimeFragment extends Fragment {
             if (!validationResult.isValid()) {
                 // Mostrar mensaje de error según la validación
                 Toast.makeText(requireContext(), validationResult.getMessage(), Toast.LENGTH_SHORT).show();
-                return; // Salir del método sin realizar la reserva
             } else {
                 Hora hora = new Hora(startHour, endHour);
                 Log.i("MiApp","Hora de inicio: "+ startHour);

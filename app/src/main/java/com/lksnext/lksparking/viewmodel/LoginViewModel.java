@@ -1,14 +1,14 @@
 package com.lksnext.lksparking.viewmodel;
 
 import android.util.Log;
+import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.lksnext.lksparking.data.DataRepository;
-import com.lksnext.lksparking.domain.Callback;
+import com.lksnext.lksparking.databinding.ActivityLoginBinding;
 
 public class LoginViewModel extends ViewModel {
 
@@ -31,7 +31,22 @@ public class LoginViewModel extends ViewModel {
             }
         });
     }
-
+    public void comprobarLogin( ActivityLoginBinding binding, String email, String password){
+        if (!(email.isEmpty()||password.isEmpty())) {
+            // Verificar además si el formato del email es válido
+            if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                // Iniciar el proceso de recuperación de contraseña
+                loginUser(email, password);
+            } else {
+                // Mostrar un mensaje de error si el formato del email no es válido
+                binding.email.setError("Por favor ingresa un email válido");
+            }
+        } else {
+            // Mostrar un mensaje de error si el campo de email o contraseña están vacíos
+            binding.email.setError("Por favor proporciona un email");
+            binding.password.setError("Por favor proporciona una contraseña");
+        }
+    }
     public void initiatePasswordReset(String email) {
         // Aquí llamas al repositorio de datos para iniciar el proceso de recuperación de contraseña
         DataRepository.getInstance().initiatePasswordReset(email, new DataRepository.Callback() {
@@ -48,5 +63,23 @@ public class LoginViewModel extends ViewModel {
                 Log.e("LoginViewModel", "Error al iniciar el proceso de recuperación de contraseña");
             }
         });
+    }
+    public boolean comprobarPasswordReset( ActivityLoginBinding binding, String email){
+        if (!email.isEmpty()) {
+            // Verificar además si el formato del email es válido
+            if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                // Iniciar el proceso de recuperación de contraseña
+                initiatePasswordReset(email);
+                return true;
+            } else {
+                // Mostrar un mensaje de error si el formato del email no es válido
+                binding.email.setError("Por favor ingresa un email válido");
+                return false;
+            }
+        } else {
+            // Mostrar un mensaje de error si el campo de email está vacío
+            binding.email.setError("Por favor proporciona un email");
+            return false;
+        }
     }
 }

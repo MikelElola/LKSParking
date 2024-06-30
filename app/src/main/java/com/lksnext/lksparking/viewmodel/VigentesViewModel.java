@@ -1,8 +1,8 @@
 package com.lksnext.lksparking.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +30,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class VigentesViewModel extends ViewModel {
+    public static final String MI_APP = "MiApp";
     private final MutableLiveData<String> mesActual = new MutableLiveData<>();
     private final MutableLiveData<Integer> yearActual = new MutableLiveData<>();
     private final MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
-    private FirebaseAuth firebaseAuth;
-    public LiveData<String> getMesActual() {
-        return mesActual;
-    }
+    private final FirebaseAuth firebaseAuth;
     public LiveData<List<Reserva>> getReservas() {return reservas;}
 
     public VigentesViewModel() {
@@ -63,16 +62,17 @@ public class VigentesViewModel extends ViewModel {
             @Override
             public void onSuccess(List<Reserva> reservasObtenidas) {
                 reservas.setValue(reservasObtenidas);
-                Log.i("MiApp", "Reservas vigentes obtenidas para el usuario " + usuario);
+                Log.i(MI_APP, "Reservas vigentes obtenidas para el usuario " + usuario);
             }
 
             @Override
             public void onFailure() {
-                Log.e("MiApp", "Error al obtener reservas vigentes");
+                Log.e(MI_APP, "Error al obtener reservas vigentes");
             }
         });
     }
 
+    @SuppressLint("DefaultLocale")
     public String formatHour(long hora) {
         // Asumiendo que el formato es HHMM
         int parteHora = (int) (hora / 60);  // Extraer la parte de la hora
@@ -84,11 +84,11 @@ public class VigentesViewModel extends ViewModel {
     public void cancelReserva(String id){
         DataRepository.getInstance().deleteReserva(id, new DataRepository.Callback() {
             @Override
-            public void onSuccess() {Log.i("MiApp", "Reserva con el id: "+id+" eliminada correctamente");
+            public void onSuccess() {Log.i(MI_APP, "Reserva con el id: "+id+" eliminada correctamente");
             }
 
             @Override
-            public void onFailure() {Log.e("MiApp", "Error al cancelar la reserva");
+            public void onFailure() {Log.e(MI_APP, "Error al cancelar la reserva");
             }
         });
     }
@@ -103,9 +103,9 @@ public class VigentesViewModel extends ViewModel {
                 // Convertir las horas a objetos Calendar para compararlas
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 Calendar calStart = Calendar.getInstance();
-                calStart.setTime(sdf.parse(startTime));
+                calStart.setTime(Objects.requireNonNull(sdf.parse(startTime)));
                 Calendar calEnd = Calendar.getInstance();
-                calEnd.setTime(sdf.parse(endTime));
+                calEnd.setTime(Objects.requireNonNull(sdf.parse(endTime)));
 
                 // Comparar las horas
                 return calStart.before(calEnd);
@@ -176,12 +176,12 @@ public class VigentesViewModel extends ViewModel {
                             DataRepository.getInstance().updateReserva(reserva, new DataRepository.Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("MiApp", "Reserva actualizada correctamente");
+                                    Log.i(MI_APP, "Reserva actualizada correctamente");
                                 }
 
                                 @Override
                                 public void onFailure() {
-                                    Log.e("MiApp", "Error al actualizar la hora de la reserva");
+                                    Log.e(MI_APP, "Error al actualizar la hora de la reserva");
                                 }
                             });
                             // Aquí puedes guardar el cambio si es necesario
@@ -216,6 +216,6 @@ public class VigentesViewModel extends ViewModel {
         String[] partesHora = hora.split(":");
         int horas = Integer.parseInt(partesHora[0]);
         int minutos = Integer.parseInt(partesHora[1]);
-        return horas * 60 + minutos;
+        return horas * 60L + minutos;
     }
 }
