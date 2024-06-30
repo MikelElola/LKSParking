@@ -284,13 +284,11 @@ public class ReservationViewModel extends ViewModel {
             return message;
         }
     }
-    public ReservaValidationResult isReservaAvailable (String date, int pos){
+    public ReservaValidationResult isReservaAvailable(String date, int pos) {
         // Parsear la fecha seleccionada
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
-            Log.i(MI_APP, "Fecha seleccionada: " + date);
             Date formatedDate = dateFormat.parse(date);
-            Log.i(MI_APP, "Fecha seleccionada parseada: " + formatedDate);
 
             // Obtener la fecha actual y calcular la fecha límite (hoy + 7 días)
             Calendar calendar = Calendar.getInstance();
@@ -300,28 +298,32 @@ public class ReservationViewModel extends ViewModel {
             calendar.set(Calendar.MILLISECOND, 0); // Ajustar la hora a 00:00:00
 
             Date today = calendar.getTime();
-            Log.i(MI_APP, "Fecha de hoy: " + today);
 
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             Date maxDate = calendar.getTime();
-            Log.i(MI_APP, "Fecha dentro de 7 das: " + maxDate);
+
             // Verificar si la fecha seleccionada está dentro del rango permitido
-            assert formatedDate != null;
             if (formatedDate.before(today) || formatedDate.after(maxDate)) {
                 return new ReservaValidationResult(false, "La fecha seleccionada debe estar dentro de los próximos 7 días.");
             }
 
             // Verificar si la plaza ya está reservada para la fecha seleccionada
-            for (Reserva reserva : Objects.requireNonNull(reservas.getValue())) {
-                if (reserva.getFecha().equals(date) && reserva.getPlaza().getPos() == pos) {
-                    return new ReservaValidationResult(false, "La plaza seleccionada ya está reservada.");
+            List<Reserva> reservasList = reservas.getValue();
+            if (reservasList != null) {
+                for (Reserva reserva : reservasList) {
+                    if (reserva.getFecha().equals(date) && reserva.getPlaza().getPos() == pos) {
+                        return new ReservaValidationResult(false, "La plaza seleccionada ya está reservada.");
+                    }
                 }
             }
+
         } catch (ParseException e) {
             return new ReservaValidationResult(false, "Error al analizar la fecha seleccionada.");
         }
+
         return new ReservaValidationResult(true, "Reserva disponible.");
     }
+
     public ReservaValidationResult isTimeAvailable(long startHour, long endHour) {
         if (endHour <= startHour) {
             return new ReservaValidationResult(false, "La hora final debe ser posterior a la hora de inicio.");
