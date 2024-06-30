@@ -3,6 +3,7 @@ package com.lksnext.lksparking.viewmodel;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +32,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VigentesViewModel extends ViewModel {
     public static final String MI_APP = "MiApp";
+    private static final Logger LOGGER = Logger.getLogger(VigentesViewModel.class.getName());
     private final MutableLiveData<String> mesActual = new MutableLiveData<>();
     private final MutableLiveData<Integer> yearActual = new MutableLiveData<>();
     private final MutableLiveData<List<Reserva>> reservas = new MutableLiveData<>();
@@ -110,8 +114,9 @@ public class VigentesViewModel extends ViewModel {
                 // Comparar las horas
                 return calStart.before(calEnd);
             } catch (ParseException e) {
-                // Manejar errores de análisis de tiempo aquí si es necesario
-                e.printStackTrace();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LOGGER.log(Level.SEVERE, e, () -> "Error parsing time: " + time);
+                }
                 return false;
             }
         } else{
