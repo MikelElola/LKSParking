@@ -85,6 +85,20 @@ public class VigentesViewModel extends ViewModel {
         return String.format("%02d:%02d", parteHora, parteMinuto); // Formato HH:mm
     }
 
+    public void editReserva(Reserva reserva){
+        DataRepository.getInstance().updateReserva(reserva, new DataRepository.Callback() {
+            @Override
+            public void onSuccess() {
+                Log.i(MI_APP, "Reserva actualizada correctamente");
+            }
+
+            @Override
+            public void onFailure() {
+                Log.e(MI_APP, "Error al actualizar la hora de la reserva");
+            }
+        });
+    }
+
     public void cancelReserva(String id){
         DataRepository.getInstance().deleteReserva(id, new DataRepository.Callback() {
             @Override
@@ -178,18 +192,7 @@ public class VigentesViewModel extends ViewModel {
                             // Asignamos los valores a la reserva
                             reserva.getHora().setHoraInicio(horaInicioMinutos);
                             reserva.getHora().setHoraFin(horaFinMinutos);
-                            DataRepository.getInstance().updateReserva(reserva, new DataRepository.Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.i(MI_APP, "Reserva actualizada correctamente");
-                                }
-
-                                @Override
-                                public void onFailure() {
-                                    Log.e(MI_APP, "Error al actualizar la hora de la reserva");
-                                }
-                            });
-                            // Aquí puedes guardar el cambio si es necesario
+                            editReserva(reserva);
                         } else {
                             // Mostrar un mensaje de error al usuario si el formato no es válido
                             Toast.makeText(context, "Formato de hora no válido.", Toast.LENGTH_SHORT).show();
